@@ -110,6 +110,7 @@ class App extends Component {
 
   /** @description Conditional rendering for the login/register modal.
    */
+
   showLoginOrSignUp() {
     const view = this.state.loginSignupButtonIsClicked;
 
