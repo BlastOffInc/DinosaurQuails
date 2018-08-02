@@ -66,8 +66,6 @@ app.get('/logout', function(req, res) {
   });
 });
 
-app.get('/');
-
 const PORT = process.env.PORT || 3000;
 
 //Establish port#
