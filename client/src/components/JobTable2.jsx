@@ -30,17 +30,10 @@ function getSorting(order, orderBy) {
 }
 
 const columnData = [
-<<<<<<< HEAD
   { id: 'company', numeric: false, disablePadding: false, label: 'Company' },
   { id: 'jobTitle', numeric: false, disablePadding: false, label: 'Job Title' },
   { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
   { id: 'dateApplied', numeric: false, disablePadding: false, label: 'Date Applied' },
-=======
-  { id: 'company', numeric: false, disablePadding: true, label: 'Company' },
-  { id: 'jobTitle', numeric: false, disablePadding: true, label: 'Job Title' },
-  { id: 'status', numeric: false, disablePadding: true, label: 'Status' },
-  { id: 'dateApplied', numeric: false, disablePadding: true, label: 'Date Applied' },
->>>>>>> implement job apps table that sorts by categories
 ];
 
 class EnhancedTableHead extends React.Component {
