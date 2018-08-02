@@ -77,7 +77,24 @@ class JobDetail extends React.Component {
     });
   }
 
+<<<<<<< HEAD
   handleChange(e) {
+=======
+  /**
+   * @description button that checks key press for enter and if it is it runs the function it is passed
+   * @param { { } } event the event being checked for enter
+   * @param { Function } callback the function to run if enter was pressed
+   *
+   * @return { undefined } undefined
+   */
+  handleEnter(event, callback) {
+    if (event.key === 'Enter') {
+      callback();
+    }
+  }
+
+  handleChange(e, callback) {
+>>>>>>> added ability to process edit job app and create job app when pressing enter
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -146,13 +163,30 @@ class JobDetail extends React.Component {
               <form className={classes.container} noValidate autoComplete="off">
                 <TextField
                   onChange={this.handleChange}
+                  onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
                   id="full-width"
                   name="appliedDate"
                   label="Date"
+<<<<<<< HEAD
                   InputLabelProps={{
                     shrink: true,
                   }}
                   placeholder={moment(appliedDate.substring(0, 10).replace(/-/g, '')).fromNow()}
+=======
+                  InputLabelProps={{ shrink: true }}
+                  placeholder={moment(appliedDate.substring(0, 10).replace(/-/g, '')).fromNow()}
+                  fullWidth
+                  margin="normal"
+                />
+                <TextField
+                  onChange={this.handleChange}
+                  onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
+                  id="full-width"
+                  name="state"
+                  label="Status"
+                  InputLabelProps={{ shrink: true }}
+                  placeholder={state}
+>>>>>>> added ability to process edit job app and create job app when pressing enter
                   fullWidth
                   margin="normal"
                 />
@@ -175,12 +209,11 @@ class JobDetail extends React.Component {
                 </FormControl>
                 <TextField
                   onChange={this.handleChange}
+                  onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
                   id="full-width"
                   name="payRange"
                   label="Salary"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={{ shrink: true }}
                   placeholder={company.payRange}
                   fullWidth
                   margin="normal"
@@ -188,7 +221,15 @@ class JobDetail extends React.Component {
               </form>
               <Button
                 className={classes.pallete}
+<<<<<<< HEAD
                 onClick={() => this.setState({ view: 'detail' })}
+=======
+                onClick={() =>
+                  this.setState({
+                    view: 'detail',
+                  })
+                }
+>>>>>>> added ability to process edit job app and create job app when pressing enter
                 align="inherit"
                 variant="subheading"
               >
