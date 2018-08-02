@@ -81,8 +81,6 @@ let login = (query, callback) => {
   });
 };
 
-const _getMyMongooseId = userName => User.find({ userName: userName });
-
 // ADD JOB SCHEMA
 let jobSchema = mongoose.Schema({
   userId: String,
@@ -192,7 +190,8 @@ const Application = mongoose.model('Application', applicationSchema);
 
 const addApplication = appData => Application.create(appData);
 
-const getMyApps = ({ userName }) => _getMyMongooseId(userName).then(myId => Application.find({ userId: myId }));
+const getMyApps = ({ userName }) =>
+  User.find({ userName: userName }).then(({ id }) => Application.find({ userId: id }));
 
 const gotACallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
 
