@@ -109,10 +109,16 @@ class App extends Component {
   }
 
   /** @description Conditional rendering for the login/register modal.
+<<<<<<< HEAD
    */
 
   showLoginOrSignUp() {
     const view = this.state.loginSignupButtonIsClicked;
+=======
+ */
+  showLoginOrSignUp() {
+    const view = this.state.loginSignupButtonIsClicked
+>>>>>>> implement job apps table that sorts by categories
 
     if (view) {
       return (
@@ -124,14 +130,22 @@ class App extends Component {
           updateUserInfo={this.updateUserInfo.bind(this)}
           getJobData={this.getJobData.bind(this)}
         />
+<<<<<<< HEAD
       );
+=======
+      )
+>>>>>>> implement job apps table that sorts by categories
     }
   }
 
   /** @description this function gets called when user logs in, adds job, updates/deletes job */
   getJobData() {
     if (this.state.isLoggedIn) {
+<<<<<<< HEAD
       this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, (response, err) => {
+=======
+      this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, ((response, err) => {
+>>>>>>> implement job apps table that sorts by categories
         this.setState({
           jobs: response.data,
         });
@@ -173,7 +187,11 @@ class App extends Component {
   /** @description This function sends a post request to server with the job info andn then updates page with the new jobs from database and closes the create job modal. */
   createNewJob(job) {
     this.submitData('/jobs', job, (response, err) => {
+<<<<<<< HEAD
       this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, (response, err) => {
+=======
+      this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, ((response, err) => {
+>>>>>>> implement job apps table that sorts by categories
         this.setState({
           jobs: response.data,
         });
@@ -224,7 +242,11 @@ class App extends Component {
           job={this.state.selectedJob}
           saveChanges={this.updateData.bind(this)}
         />
+<<<<<<< HEAD
       );
+=======
+      )
+>>>>>>> implement job apps table that sorts by categories
     }
   }
 
@@ -234,6 +256,7 @@ class App extends Component {
    */
 
   render() {
+<<<<<<< HEAD
     return (
       <div>
         <Fragment>
@@ -258,6 +281,37 @@ class App extends Component {
         <div>
           <JobTable2 jobData={this.state.jobs} />
         </div>
+=======
+
+    return (<div>
+      <Fragment>
+        <Nav
+          displayLoginSignup={this.displayLoginSignup.bind(this)}
+          isLoggedIn={this.state.isLoggedIn}
+          displayCreateJob={this.displayCreateJob.bind(this)}
+          updateStatus={this.updateStatus.bind(this)}
+          updateUserInfo={this.updateUserInfo.bind(this)}
+        />
+        <div style={this.state.isLoggedIn ? {} : { 'display': 'none' }}>
+          <SelectBar changeJobFilter={this.changeJobFilter.bind(this)} />
+          <JobList detailOpen={this.detailOpen.bind(this)} jobData={this.state.jobs} filter={this.state.filter} />
+        </div>
+        <div style={this.state.isLoggedIn ? { 'display': 'none' } : {}}>
+          <LandingPage />
+        </div>
+      </Fragment>
+      <div className="signInRegister">
+        {this.showLoginOrSignUp()}
+      </div>
+      <div className="createJob">
+        {this.showCreate()}
+      </div>
+      <div className="jobDetail">
+        {this.showDetail()}
+      </div>
+      <div>
+          <JobTable2 jobData={this.state.jobs} />
+>>>>>>> implement job apps table that sorts by categories
       </div>
     );
   }
