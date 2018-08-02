@@ -77,7 +77,20 @@ class JobDetail extends React.Component {
     });
   }
 
-  handleChange(e) {
+  /**
+   * @description button that checks key press for enter and if it is it runs the function it is passed
+   * @param { { } } event the event being checked for enter
+   * @param { Function } callback the function to run if enter was pressed
+   *
+   * @return { undefined } undefined
+   */
+  handleEnter(event, callback) {
+    if (event.key === 'Enter') {
+      callback();
+    }
+  }
+
+  handleChange(e, callback) {
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -146,6 +159,7 @@ class JobDetail extends React.Component {
               <form className={classes.container} noValidate autoComplete="off">
                 <TextField
                   onChange={this.handleChange}
+                  onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
                   id="full-width"
                   name="appliedDate"
                   label="Date"
@@ -161,6 +175,7 @@ class JobDetail extends React.Component {
                   <Select
                     value={this.state.state}
                     onChange={this.handleChange}
+                    onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
                     input={<Input name="state" id="state-helper" />}
                   >
                     <MenuItem value="">
@@ -175,12 +190,11 @@ class JobDetail extends React.Component {
                 </FormControl>
                 <TextField
                   onChange={this.handleChange}
+                  onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
                   id="full-width"
                   name="payRange"
                   label="Salary"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  InputLabelProps={{ shrink: true }}
                   placeholder={company.payRange}
                   fullWidth
                   margin="normal"
