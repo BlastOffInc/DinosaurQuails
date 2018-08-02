@@ -3,6 +3,7 @@ bower_components/
 *.log
 
 build/
+config/
 
 package-lock.json
 bundle.js

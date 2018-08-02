@@ -25,7 +25,7 @@ let userSchema = mongoose.Schema({
   lastName: String,
   userName: { type: String, unique: true },
   email: { type: String, unique: true },
-  password: String
+  password: String,
 });
 
 //ADD USER MODEL for user db
@@ -81,6 +81,8 @@ let login = (query, callback) => {
   });
 };
 
+const _getMyMongooseId = userName => User.find({ userName: userName });
+
 // ADD JOB SCHEMA
 let jobSchema = mongoose.Schema({
   userId: String,
@@ -89,18 +91,18 @@ let jobSchema = mongoose.Schema({
     jobTitle: String,
     webSite: String,
     logoUrl: String,
-    payRange: String
+    payRange: String,
   },
   contact: {
     email: String,
     phone: String,
-    recruiter: String
+    recruiter: String,
   },
   postDate: Date,
   appliedDate: Date,
   interviewedDate: Date,
   coverLetterUrl: String,
-  state: String
+  state: String,
 });
 
 // ADD JOB MODEL
@@ -116,18 +118,18 @@ let createJob = (fieldInfo, callback) => {
       jobTitle: fieldInfo.jobTitle,
       webSite: fieldInfo.webSite,
       logoUrl: fieldInfo.logoUrl, //* add to field info
-      payRange: fieldInfo.payRange //* add to feild info
+      payRange: fieldInfo.payRange, //* add to feild info
     },
     contact: {
       email: fieldInfo.email,
       phone: fieldInfo.phone,
-      recruiter: fieldInfo.recruiter
+      recruiter: fieldInfo.recruiter,
     },
     postDate: fieldInfo.postDate,
     appliedDate: fieldInfo.appliedDate,
     interviewedDate: fieldInfo.interviewedDate,
     coverLetterUrl: fieldInfo.coverLetterUrl,
-    state: fieldInfo.state
+    state: fieldInfo.state,
   });
 
   jobOpportunity.save(function(error, savedJob) {
@@ -144,7 +146,10 @@ let createJob = (fieldInfo, callback) => {
 // Fetch all of the jobs belong to the login user and send back to UI
 const getJobs = (query, callback) => {
   console.log(query);
-  Job.find(query).sort({ postDate: 'desc' }).then(jobs => callback(null, jobs)).catch(err => callback(err, null));
+  Job.find(query)
+    .sort({ postDate: 'desc' })
+    .then(jobs => callback(null, jobs))
+    .catch(err => callback(err, null));
 };
 
 // Update a particular job
@@ -160,8 +165,57 @@ const updateJob = (update, callback) => {
 // Delete a particular job
 const removeJob = (remove, callback) => {
   // just pass the _.id through.
-  Job.findByIdAndDelete(remove._id).then(result => callback(null, result)).catch(err => callback(err, null));
+  Job.findByIdAndDelete(remove._id)
+    .then(result => callback(null, result))
+    .catch(err => callback(err, null));
 };
+
+const applicationSchema = mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  appName: String,
+  customizedFull: Boolean,
+  customizedPersonal: Boolean,
+  customizedSotwareEngineeringProjects: Boolean,
+  customizedCoverLetter: Boolean,
+  mentionedNonTechnicalExperience: Boolean,
+  codeLinks: Boolean,
+  deployedLinks: Boolean,
+  referral: Boolean,
+  usedARecruiter: Boolean,
+  networked: Boolean,
+  inCompanyConnection: Boolean,
+  callback: { type: Boolean, default: false },
+  interview: { type: Boolean, default: false },
+});
+
+const Application = mongoose.model('Application', applicationSchema);
+
+const addApplication = appData => Application.create(appData);
+
+const getMyApps = ({ userName }) => _getMyMongooseId(userName).then(myId => Application.find({ userId: myId }));
+
+const gotACallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
+
+const gotAnInterview = ({ id }) => Application.findByIdAndUpdate(id, { interview: true });
+
+const _generateStats = data =>
+  data.reduce(
+    (response, { attributes }) =>
+      Object.keys(attributes).forEach(
+        (key, resKey) =>
+          !['_id', 'userId', 'appName', 'callback', 'interview'].includes(key) &&
+          (response[(resKey = key + ' ' + attributes[key])] = {
+            callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
+            interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
+            total: 1 + ((response[resKey] && response[resKey].total) || 0),
+          })
+      ) || response,
+    { totalApps: data.length }
+  );
+
+const getMyStats = user => getMyApps(user).then(_generateStats);
+
+const getAllStats = () => Application.find().then(_generateStats);
 
 // module.exports.db = db;
 module.exports.updateJob = updateJob;
@@ -170,3 +224,9 @@ module.exports.createUser = createUser;
 module.exports.login = login;
 module.exports.createJob = createJob;
 module.exports.getJobs = getJobs;
+exports.addApplication = addApplication;
+exports.getMyApps = getMyApps;
+exports.gotACallback = gotACallback;
+exports.gotAnInterview = gotAnInterview;
+exports.getMyStats = getMyStats;
+exports.getAllStats = getAllStats;
