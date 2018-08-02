@@ -77,9 +77,6 @@ class JobDetail extends React.Component {
     });
   }
 
-<<<<<<< HEAD
-  handleChange(e) {
-=======
   /**
    * @description button that checks key press for enter and if it is it runs the function it is passed
    * @param { { } } event the event being checked for enter
@@ -94,7 +91,6 @@ class JobDetail extends React.Component {
   }
 
   handleChange(e, callback) {
->>>>>>> added ability to process edit job app and create job app when pressing enter
     this.setState({
       [e.target.name]: e.target.value,
     });
@@ -167,26 +163,10 @@ class JobDetail extends React.Component {
                   id="full-width"
                   name="appliedDate"
                   label="Date"
-<<<<<<< HEAD
                   InputLabelProps={{
                     shrink: true,
                   }}
                   placeholder={moment(appliedDate.substring(0, 10).replace(/-/g, '')).fromNow()}
-=======
-                  InputLabelProps={{ shrink: true }}
-                  placeholder={moment(appliedDate.substring(0, 10).replace(/-/g, '')).fromNow()}
-                  fullWidth
-                  margin="normal"
-                />
-                <TextField
-                  onChange={this.handleChange}
-                  onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
-                  id="full-width"
-                  name="state"
-                  label="Status"
-                  InputLabelProps={{ shrink: true }}
-                  placeholder={state}
->>>>>>> added ability to process edit job app and create job app when pressing enter
                   fullWidth
                   margin="normal"
                 />
@@ -195,6 +175,7 @@ class JobDetail extends React.Component {
                   <Select
                     value={this.state.state}
                     onChange={this.handleChange}
+                    onKeyUp={e => this.handleEnter(e, this.update.bind(this))}
                     input={<Input name="state" id="state-helper" />}
                   >
                     <MenuItem value="">
@@ -221,15 +202,7 @@ class JobDetail extends React.Component {
               </form>
               <Button
                 className={classes.pallete}
-<<<<<<< HEAD
                 onClick={() => this.setState({ view: 'detail' })}
-=======
-                onClick={() =>
-                  this.setState({
-                    view: 'detail',
-                  })
-                }
->>>>>>> added ability to process edit job app and create job app when pressing enter
                 align="inherit"
                 variant="subheading"
               >
