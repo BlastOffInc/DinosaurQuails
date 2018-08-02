@@ -200,19 +200,30 @@ const gotCallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: tr
 
 const gotInterview = ({ id }) => Application.findByIdAndUpdate(id, { interview: true });
 
+const _analytics = data =>
+  Object.keys(data).forEach(key => {
+    if (key !== 'totalApps') {
+      data[key].callback *= 100 / data[key].total;
+      data[key].interview *= 100 / data[key].total;
+      data[key].total *= 100 / data.totalApps;
+    }
+  }) || data;
+
 const _generateStats = data =>
-  data.reduce(
-    (response, attributes) =>
-      Object.keys(attributes.toJSON()).forEach(
-        (key, resKey) =>
-          !['_id', 'userId', 'appName', 'callback', 'interview', '__v'].includes(key) &&
-          (response[(resKey = key + ' ' + attributes[key])] = {
-            callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
-            interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
-            total: 1 + ((response[resKey] && response[resKey].total) || 0),
-          })
-      ) || response,
-    { totalApps: data.length }
+  _analytics(
+    data.reduce(
+      (response, attributes) =>
+        Object.keys(attributes.toJSON()).forEach(
+          (key, resKey) =>
+            !['_id', 'userId', 'appName', 'callback', 'interview', '__v'].includes(key) &&
+            (response[(resKey = key + ' ' + attributes[key])] = {
+              callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
+              interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
+              total: 1 + ((response[resKey] && response[resKey].total) || 0),
+            })
+        ) || response,
+      { totalApps: data.length }
+    )
   );
 
 const getMyStats = user => getMyApps(user).then(_generateStats);
