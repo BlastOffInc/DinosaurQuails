@@ -193,9 +193,9 @@ const addApplication = appData => Application.create(appData);
 const getMyApps = ({ userName }) =>
   User.find({ userName: userName }).then(({ id }) => Application.find({ userId: id }));
 
-const gotACallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
+const gotCallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
 
-const gotAnInterview = ({ id }) => Application.findByIdAndUpdate(id, { interview: true });
+const gotInterview = ({ id }) => Application.findByIdAndUpdate(id, { interview: true });
 
 const _generateStats = data =>
   data.reduce(
@@ -225,7 +225,7 @@ module.exports.createJob = createJob;
 module.exports.getJobs = getJobs;
 exports.addApplication = addApplication;
 exports.getMyApps = getMyApps;
-exports.gotACallback = gotACallback;
-exports.gotAnInterview = gotAnInterview;
+exports.gotCallback = gotCallback;
+exports.gotInterview = gotInterview;
 exports.getMyStats = getMyStats;
 exports.getAllStats = getAllStats;

@@ -9,13 +9,14 @@ const createUser = require('../db/index.js').createUser;
 const jobs = require('./jobs');
 const job = require('./job');
 const PATH = require('path');
+const application = require('./application');
 
 /****** SETUP HEADERS *****/
-app.use((req,res,next) => {
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, Origin, X-Requested-With');
   next();
-})
+});
 
 /****** SETUP MIDDLEWARE *****/
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +26,7 @@ app.use(
     secret: 'jurassic eggs',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true }
+    cookie: { secure: true },
   })
 );
 /****** SERVE STATIC FILES *****/
@@ -36,7 +37,7 @@ app.get('/', util.checkUser, (req, res) => {
   // Just checks verification status.
 });
 /**
- * Some notes on routing. Our team ran into issues when setting up express.router(). 
+ * Some notes on routing. Our team ran into issues when setting up express.router().
  * Normally you'd utilize app.use(endpoint, routelocation). We couldn't get app.use to work.
  * Every time we attempted to utilize it, the server wouldn't reach the endpoint.
  */
@@ -57,11 +58,15 @@ app.get('/signup', require('./signup.js'));
 app.post('/login', require('./login.js'));
 app.get('/login', require('./login.js'));
 
+app.use('/application', application);
+
 app.get('/logout', function(req, res) {
   req.session.destroy(function() {
-    res.status(200).json({message: 'Successful Logout'});
+    res.status(200).json({ message: 'Successful Logout' });
   });
 });
+
+app.get('/');
 
 const PORT = process.env.PORT || 3000;
 
