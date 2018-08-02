@@ -54,13 +54,13 @@ class EnhancedTableHead extends React.Component {
     return (
       <TableHead>
         <TableRow>
-          {/* <TableCell padding="checkbox">
+          <TableCell padding="checkbox">
             <Checkbox
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={numSelected === rowCount}
               onChange={onSelectAllClick}
             />
-          </TableCell> */}
+          </TableCell>
           {columnData.map(column => {
             return (
               <TableCell
@@ -206,13 +206,13 @@ class EnhancedTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
-  // handleSelectAllClick = (event, checked) => {
-  //   if (checked) {
-  //     this.setState(state => ({ selected: state.data.map(n => n.id) }));
-  //     return;
-  //   }
-  //   this.setState({ selected: [] });
-  // };
+  handleSelectAllClick = (event, checked) => {
+    if (checked) {
+      this.setState(state => ({ selected: state.data.map(n => n.id) }));
+      return;
+    }
+    this.setState({ selected: [] });
+  };
 
   handleClick = (event, id) => {
     const { selected } = this.state;
@@ -243,7 +243,6 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
-    console.log('line 239', this.props);
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
@@ -277,9 +276,9 @@ class EnhancedTable extends React.Component {
                       key={n.id}
                       selected={isSelected}
                     >
-                      {/* <TableCell padding="checkbox">
+                      <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
-                      </TableCell> */}
+                      </TableCell>
                       <TableCell component="th" scope="row">
                         {n.company.name}
                       </TableCell>

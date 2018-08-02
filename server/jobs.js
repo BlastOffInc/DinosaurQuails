@@ -6,9 +6,8 @@ let router = express.Router();
 
 /**
  * @description This utilizes db function to search for jobs. Client side has user id as the request query to search for.
-**/
+ **/
 const jobHelperQuery = (req, res) => {
-
   db.getJobs(req.query, (err, jobs) => {
     if (err) {
       console.log(err);
@@ -18,10 +17,8 @@ const jobHelperQuery = (req, res) => {
   });
 };
 
-
-  //* @description This is utilized when a request is received from client to add a job entry to db. In case user left some fields in the form blank we have the fieldInfo object with default values to ensure the entry still gets saved. */
+//* @description This is utilized when a request is received from client to add a job entry to db. In case user left some fields in the form blank we have the fieldInfo object with default values to ensure the entry still gets saved. */
 const jobPoster = (req, res) => {
-
   let fieldInfo = {
     userId: req.body.userId || '66666666',
     name: req.body.name || 'none',
@@ -35,8 +32,8 @@ const jobPoster = (req, res) => {
     interviewedDate: req.body.interviewedDate || new Date(),
     coverLetterUrl: req.body.coverLetterUrl || 'none',
     state: req.body.state || 'none',
-    payRange: req.body.payRange || '$1,000,000,000',
-    logoUrl: 'https://i.imgur.com/usLTbBq.png'
+    payRange: req.body.payRange || '',
+    logoUrl: 'https://i.imgur.com/usLTbBq.png',
   };
 
   // util.logoGo(fieldInfo.webSite, (error, logoUrl) => {

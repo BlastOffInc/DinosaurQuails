@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 // This is the component for creating a new job. Since we need to host a form in the component, follow
 // the React Design Patterns rules, we are using a stateful component with local states to dynamically
@@ -31,6 +32,7 @@ class CreateJob extends React.Component {
       payRange: '',
       state: '',
       open: true,
+      jobImportURL: '',
     };
 
     this.handleClose = this.handleClose.bind(this);
@@ -59,12 +61,31 @@ class CreateJob extends React.Component {
   // Ajax call from the main component.
   // Eventually, we should have form validation for this part.
   createNewJob() {
-    console.log(this.state);
     this.props.onSubmit(this.state);
+  }
+
+  getJobInfoFromURL() {
+    axios
+      .get('/joburl', {
+        params: {
+          url: this.state.jobImportURL,
+        },
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => console.log(err));
+    // axios
+    //   .get(endpoint, params, callback)
+    //   .then(response => {
+    //     console.log(response);
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   // JSX renders html elements
   render() {
+    console.log(this.state.jobImportURL);
     return (
       <div>
         <Dialog
@@ -78,6 +99,32 @@ class CreateJob extends React.Component {
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               <div>
+                <label>Job Listing URL</label>
+                <input
+                  type="text"
+                  name="jobImportURL"
+                  value={this.state.jobImportURL}
+                  onChange={e => {
+                    this.handleChange(e);
+                  }}
+                  required
+                />
+              </div>
+            </DialogContentText>
+          </DialogContent>
+
+          <Button
+            variant="outlined"
+            onClick={e => {
+              this.getJobInfoFromURL();
+            }}
+          >
+            Import from URL
+          </Button>
+
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <div>
                 <label>Company name:</label>
                 <input
                   type="text"
@@ -86,7 +133,6 @@ class CreateJob extends React.Component {
                   onChange={e => {
                     this.handleChange(e);
                   }}
-                  required
                 />
               </div>
 
