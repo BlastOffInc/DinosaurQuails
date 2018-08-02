@@ -188,10 +188,13 @@ const applicationSchema = mongoose.Schema({
 
 const Application = mongoose.model('Application', applicationSchema);
 
-const addApplication = appData => Application.create(appData);
+const addApplication = appData =>
+  User.find({ userName: appData.userName }).then(user =>
+    Application.create(delete appData.userName && (appData.userId = user[0]._id) && appData)
+  );
 
 const getMyApps = ({ userName }) =>
-  User.find({ userName: userName }).then(({ id }) => Application.find({ userId: id }));
+  User.find({ userName: userName }).then(user => Application.find({ userId: user[0]._id }));
 
 const gotCallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
 
@@ -199,10 +202,10 @@ const gotInterview = ({ id }) => Application.findByIdAndUpdate(id, { interview: 
 
 const _generateStats = data =>
   data.reduce(
-    (response, { attributes }) =>
-      Object.keys(attributes).forEach(
+    (response, attributes) =>
+      Object.keys(attributes.toJSON()).forEach(
         (key, resKey) =>
-          !['_id', 'userId', 'appName', 'callback', 'interview'].includes(key) &&
+          !['_id', 'userId', 'appName', 'callback', 'interview', '__v'].includes(key) &&
           (response[(resKey = key + ' ' + attributes[key])] = {
             callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
             interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
