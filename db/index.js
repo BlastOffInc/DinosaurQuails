@@ -170,7 +170,6 @@ const removeJob = (remove, callback) => {
 
 const applicationSchema = mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  appName: String,
   customizedFull: Boolean,
   customizedPersonal: Boolean,
   customizedSotwareEngineeringProjects: Boolean,
@@ -215,7 +214,7 @@ const _generateStats = data =>
       (response, attributes) =>
         Object.keys(attributes.toJSON()).forEach(
           (key, resKey) =>
-            !['_id', 'userId', 'appName', 'callback', 'interview', '__v'].includes(key) &&
+            !['_id', 'userId', 'callback', 'interview', '__v'].includes(key) &&
             (response[(resKey = key + ' ' + attributes[key])] = {
               callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
               interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),

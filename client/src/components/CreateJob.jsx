@@ -34,6 +34,19 @@ class CreateJob extends React.Component {
       open: true,
       jobImportURL: '',
       missingFields: false,
+      analytics: {
+        customizedFull: false,
+        customizedPersonal: false,
+        customizedSotwareEngineeringProjects: false,
+        customizedCoverLetter: false,
+        mentionedNonTechnicalExperience: false,
+        codeLinks: false,
+        deployedLinks: false,
+        referral: false,
+        usedARecruiter: false,
+        networked: false,
+        inCompanyConnection: false,
+      },
     };
 
     this.handleClose = this.handleClose.bind(this);
