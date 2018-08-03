@@ -8,6 +8,7 @@ import CreateJob from './CreateJob.jsx';
 import JobDetailWrapped from './JobDetail.jsx';
 import JobTable2 from './JobTable2.jsx';
 import axios from 'axios';
+import Application from './Application.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -256,20 +257,16 @@ class App extends Component {
               updateUserInfo={this.updateUserInfo.bind(this)}
             />
             <SelectBar changeTab={this.changeTab.bind(this)} />
+            <div>
+              {/* was in SelectBar changeJobFilter={this.changeJobFilter.bind(this)} */}
+              <JobList
+                className="jobs"
+                detailOpen={this.detailOpen.bind(this)}
+                jobData={this.state.jobs}
+                filter={this.state.filter}
+              />
+            </div>
           </Fragment>
-          <div className="dashboard">
-            {/* was in SelectBar changeJobFilter={this.changeJobFilter.bind(this)} */}
-            <JobList
-              className="jobs"
-              detailOpen={this.detailOpen.bind(this)}
-              jobData={this.state.jobs}
-              filter={this.state.filter}
-            />
-            <div className="analytics">Some cool analytics stat goes here </div>
-            <div className="tasks">Upcoming todos go here </div>
-            <div className="tracker">small tracker?? </div>
-          </div>
-
           <div className="signInRegister">{this.showLoginOrSignUp()}</div>
           <div className="createJob">{this.showCreate()}</div>
           <div className="jobDetail">{this.showDetail()}</div>
@@ -337,7 +334,9 @@ class App extends Component {
           <div className="signInRegister">{this.showLoginOrSignUp()}</div>
           <div className="createJob">{this.showCreate()}</div>
           <div className="jobDetail">{this.showDetail()}</div>
-          <div className="main-body">Analytics thing here</div>
+          <div className="main-body">
+            <Application />
+          </div>
         </div>
       );
     } else {
