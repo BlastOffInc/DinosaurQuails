@@ -5,6 +5,7 @@ var DomParser = require('dom-parser');
 // Utilities for session care
 const axios = require('axios');
 
+<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
 const createSession = (req, res, newUser) => {
   return req.session.regenerate(() => {
     req.session.user = newUser;
@@ -21,9 +22,27 @@ const createSession = (req, res, newUser) => {
     res.send(withoutPass);
   });
 };
+=======
+// const createSession = (req, res, newUser) => {
+//   return req.session.regenerate(() => {
+//     req.session.user = newUser;
+//     // data for frontEnd
+//     //extract everything from newUser except password.
+//     // add an additional tag to update front end of logged in status
+//     let withoutPass = {
+//       firstName: newUser.firstName,
+//       lastName: newUser.lastName,
+//       userName: newUser.userName,
+//       email: newUser.email,
+//       _id: newUser._id
+//     }
+//     res.send(withoutPass);
+//   });
+// };
+>>>>>>> temporary merged
 
 const isLoggedIn = (req, res) => {
-  return req.session ? !!req.session.user : false;
+  return req.user ? true : false;
 };
 
 //Refactor this function to communicate with front-end to change state
@@ -32,7 +51,10 @@ const isLoggedIn = (req, res) => {
 const checkUser = (req, res, next) => {
   if (!exports.isLoggedIn(req)) {
     // res.redirect('/login');
-    res.json({ messageCode: 401, message: 'User Must Login' });
+    res.json({
+      messageCode: 401,
+      message: 'User Must Login'
+    });
   } else {
     next();
   }
@@ -72,5 +94,9 @@ module.exports.getJobInfo = getJobInfo;
 // module.exports.logoGo = logoGo;
 module.exports.createSession = createSession;
 module.exports.isLoggedIn = isLoggedIn;
+<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
 module.exports.checkUser = checkUser;
 module.exports.getJobInfo = getJobInfo;
+=======
+module.exports.checkUser = checkUser;
+>>>>>>> temporary merged

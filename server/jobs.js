@@ -17,6 +17,10 @@ const jobHelperQuery = (req, res) => {
   });
 };
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 //* @description This is utilized when a request is received from client to add a job entry to db. In case user left some fields in the form blank we have the fieldInfo object with default values to ensure the entry still gets saved. */
 const jobPoster = (req, res) => {
   let fieldInfo = {
@@ -59,6 +63,7 @@ const jobPoster = (req, res) => {
   });
 };
 
+<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
 const sampleData = (req, res) => {
   let arr = [];
   let i = 1000;
@@ -112,7 +117,10 @@ const sampleData = (req, res) => {
 router.get('/jobs/sampleData', sampleData);
 
 router.post('/jobs', jobPoster);
+=======
+router.post(jobPoster);
+>>>>>>> temporary merged
 
-router.get('/jobs', jobHelperQuery);
+router.get(jobHelperQuery);
 
 module.exports = router;

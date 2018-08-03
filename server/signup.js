@@ -3,7 +3,7 @@ const app = require('./index.js');
 const util = require('./helpers/utilities.js');
 var router = require('express').Router();
 
-router.post('/signup', function(req, res) {
+router.post('/signup', function (req, res) {
   //check for instance of user
   //if not, add new User to DB
   //Else render 'Username already taken' prompt

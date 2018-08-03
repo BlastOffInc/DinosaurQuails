@@ -11,11 +11,11 @@ mongoose.connect(DB);
 
 const db = mongoose.connection;
 
-db.on('error', function() {
+db.on('error', function () {
   console.log('Error connecting to Mongoose');
 });
 
-db.once('open', function() {
+db.once('open', function () {
   console.log('Mongoose connected');
 });
 
@@ -23,25 +23,39 @@ db.once('open', function() {
 let userSchema = mongoose.Schema({
   firstName: String,
   lastName: String,
-  userName: { type: String, unique: true },
-  email: { type: String, unique: true },
-  password: String,
+  userName: {
+    type: String,
+    unique: true
+  },
+  email: {
+    type: String,
+    unique: true
+  },
+  googleId: String
 });
 
 //ADD USER MODEL for user db
 let User = mongoose.model('User', userSchema);
 
 let createUser = (user, callback) => {
-  User.findOne({ email: user.email }, (err, existingUser) => {
+  User.findOne({
+    email: user.email
+  }, (err, existingUser) => {
     if (err) {
       callback(err, null);
     }
     if (existingUser) {
       console.log('existing', existingUser);
       if (existingUser.email === user.email) {
-        callback(null, { messageCode: 101, message: 'User email already exists' });
+        callback(null, {
+          messageCode: 101,
+          message: 'User email already exists'
+        });
       } else if (existingUser.userName === user.userName) {
-        callback(null, { messageCode: 102, message: 'User name already exists' });
+        callback(null, {
+          messageCode: 102,
+          message: 'User name already exists'
+        });
       }
     } else {
       hash.hashPass(user, (err, userResult) => {
@@ -62,19 +76,27 @@ let createUser = (user, callback) => {
 // Logic to take care of user login, first check if the login user is an existing user or not
 // secondly, check if the user password is valid.
 let login = (query, callback) => {
-  User.findOne({ email: query.email }, (err, user) => {
+  User.findOne({
+    email: query.email
+  }, (err, user) => {
     if (err) {
       callback(err, null);
     }
 
     if (!user) {
-      callback(null, { messageCode: 103, message: 'User does not exist' });
+      callback(null, {
+        messageCode: 103,
+        message: 'User does not exist'
+      });
     } else {
-      bcrypt.compare(query.password, user.password, function(err, res) {
+      bcrypt.compare(query.password, user.password, function (err, res) {
         if (res === true) {
           callback(null, user);
         } else {
-          callback(null, { messageCode: 104, message: 'Wrong password' });
+          callback(null, {
+            messageCode: 104,
+            message: 'Wrong password'
+          });
         }
       });
     }
@@ -130,7 +152,7 @@ let createJob = (fieldInfo, callback) => {
     state: fieldInfo.state,
   });
 
-  jobOpportunity.save(function(error, savedJob) {
+  jobOpportunity.save(function (error, savedJob) {
     if (error) {
       console.log('could not save job to db', error);
       callback(error, null);
@@ -149,6 +171,7 @@ let createJob = (fieldInfo, callback) => {
 const getJobs = (query, callback) => {
   console.log(query);
   Job.find(query)
+<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
     .sort({ postDate: 'desc' })
     .then(jobs => {
       let response = [];
@@ -163,6 +186,12 @@ const getJobs = (query, callback) => {
         )
       ).then(() => callback(null, response));
     })
+=======
+    .sort({
+      postDate: 'desc'
+    })
+    .then(jobs => callback(null, jobs))
+>>>>>>> temporary merged
     .catch(err => callback(err, null));
 };
 
@@ -185,7 +214,15 @@ const removeJob = (remove, callback) => {
 };
 
 const applicationSchema = mongoose.Schema({
+<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
   jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
+=======
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  appName: String,
+>>>>>>> temporary merged
   customizedFull: Boolean,
   customizedPersonal: Boolean,
   customizedSotwareEngineeringProjects: Boolean,
@@ -197,12 +234,19 @@ const applicationSchema = mongoose.Schema({
   usedARecruiter: Boolean,
   networked: Boolean,
   inCompanyConnection: Boolean,
-  callback: { type: Boolean, default: false },
-  interview: { type: Boolean, default: false },
+  callback: {
+    type: Boolean,
+    default: false
+  },
+  interview: {
+    type: Boolean,
+    default: false
+  },
 });
 
 const Application = mongoose.model('Application', applicationSchema);
 
+<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
 function addApplication(appData) {
   return Application.create(appData);
 }
@@ -212,6 +256,35 @@ const getMyApps = ({ userId }) =>
 
 const got = ({ appId, jobId, type }) =>
   Application.findByIdAndUpdate(appId, { [type]: true }).then(() => Job.findByIdAndUpdate(jobId, { state: type }));
+=======
+const addApplication = appData =>
+  User.find({
+    userName: appData.userName
+  }).then(user =>
+    Application.create(delete appData.userName && (appData.userId = user[0]._id) && appData)
+  );
+
+const getMyApps = ({
+    userName
+  }) =>
+  User.find({
+    userName: userName
+  }).then(user => Application.find({
+    userId: user[0]._id
+  }));
+
+const gotCallback = ({
+  id
+}) => Application.findByIdAndUpdate(id, {
+  callback: true
+});
+
+const gotInterview = ({
+  id
+}) => Application.findByIdAndUpdate(id, {
+  interview: true
+});
+>>>>>>> temporary merged
 
 const _analytics = data =>
   Object.keys(data).forEach(key => {
@@ -226,6 +299,7 @@ const _generateStats = data =>
   _analytics(
     data.reduce(
       (response, attributes) =>
+<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
         Object.keys(attributes.toJSON()).forEach(
           (key, resKey) =>
             !['_id', 'jobId', 'callback', 'interview', '__v'].includes(key) &&
@@ -236,6 +310,19 @@ const _generateStats = data =>
             })
         ) || response,
       { totalApps: data.length }
+=======
+      Object.keys(attributes.toJSON()).forEach(
+        (key, resKey) =>
+        !['_id', 'userId', 'appName', 'callback', 'interview', '__v'].includes(key) &&
+        (response[(resKey = key + ' ' + attributes[key])] = {
+          callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
+          interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
+          total: 1 + ((response[resKey] && response[resKey].total) || 0),
+        })
+      ) || response, {
+        totalApps: data.length
+      }
+>>>>>>> temporary merged
     )
   );
 
@@ -269,3 +356,4 @@ module.exports.getJobs = getJobs;
 exports.got = got;
 exports.getMyStats = getMyStats;
 exports.getAllStats = getAllStats;
+exports.User = User;
