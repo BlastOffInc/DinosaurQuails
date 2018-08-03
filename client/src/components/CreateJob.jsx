@@ -291,7 +291,9 @@ class CreateJob extends React.Component {
                   onKeyUp={e => this.handleEnter(e, this.createNewJob.bind(this))}
                 >
                   <option value="">Please choose an option</option>
-                  <option value="pending">Pending</option>
+                  <option value="interested">Interested </option>
+                  <option value="pending">Pending/Applied</option>
+                  <option value="interview">Interview</option>
                   <option value="offered">Offered</option>
                   <option value="rejected">Rejected</option>
                 </select>

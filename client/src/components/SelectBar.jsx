@@ -36,7 +36,12 @@ class SelectBar extends Component {
           textColor="primary"
           centered
         >
-          <Tab label="All" onClick={() => this.props.changeJobFilter('all')} />
+          <Tab label="Dashboard" onClick={() => this.props.changeTab('all')} />
+          <Tab label="Tracker" onClick={() => this.props.changeTab('tracker')} />
+          <Tab label="Tasks" onClick={() => this.props.changeTab('tasks')} />
+          <Tab label="Analytics" onClick={() => this.props.changeTab('analytics')} />
+
+          {/* <Tab label="All" onClick={() => this.props.changeJobFilter('all')} />
           <Tab label="Interested" onClick={() => this.props.changeJobFilter('interested')} />
           <Tab label="Applied" onClick={() => this.props.changeJobFilter('pending')} />
           <Tab label="Interview" onClick={() => this.props.changeJobFilter('interview')} />

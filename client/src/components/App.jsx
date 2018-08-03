@@ -27,6 +27,7 @@ class App extends Component {
       detailOpen: false,
       loginSignupButtonIsClicked: false,
       isLoggedIn: false,
+      tab: 'all',
       view: false,
       createView: false,
     };
@@ -157,9 +158,15 @@ class App extends Component {
   }
 
   /** @description Updates the visible jobs to match the category that the user selected. */
-  changeJobFilter(status) {
+  // changeJobFilter(status) {
+  //   this.setState({
+  //     filter: status,
+  //   });
+  // }
+
+  changeTab(tab) {
     this.setState({
-      filter: status,
+      tab: tab,
     });
   }
 
@@ -237,7 +244,38 @@ class App extends Component {
    */
 
   render() {
-    if (this.state.isLoggedIn) {
+    if (this.state.isLoggedIn && this.state.tab === 'all') {
+      return (
+        <div>
+          <Fragment>
+            <Nav
+              displayLoginSignup={this.displayLoginSignup.bind(this)}
+              isLoggedIn={this.state.isLoggedIn}
+              displayCreateJob={this.displayCreateJob.bind(this)}
+              updateStatus={this.updateStatus.bind(this)}
+              updateUserInfo={this.updateUserInfo.bind(this)}
+            />
+            <SelectBar changeTab={this.changeTab.bind(this)} />
+          </Fragment>
+          <div className="dashboard">
+            {/* was in SelectBar changeJobFilter={this.changeJobFilter.bind(this)} */}
+            <JobList
+              className="jobs"
+              detailOpen={this.detailOpen.bind(this)}
+              jobData={this.state.jobs}
+              filter={this.state.filter}
+            />
+            <div className="analytics">Some cool analytics stat goes here </div>
+            <div className="tasks">Upcoming todos go here </div>
+            <div className="tracker">small tracker?? </div>
+          </div>
+
+          <div className="signInRegister">{this.showLoginOrSignUp()}</div>
+          <div className="createJob">{this.showCreate()}</div>
+          <div className="jobDetail">{this.showDetail()}</div>
+        </div>
+      );
+    } else if (this.state.isLoggedIn && this.state.tab === 'tracker') {
       return (
         <div>
           <Fragment>
@@ -249,16 +287,57 @@ class App extends Component {
               updateUserInfo={this.updateUserInfo.bind(this)}
             />
             <div>
-              <SelectBar changeJobFilter={this.changeJobFilter.bind(this)} />
-              <JobList detailOpen={this.detailOpen.bind(this)} jobData={this.state.jobs} filter={this.state.filter} />
+              <SelectBar changeTab={this.changeTab.bind(this)} />
             </div>
           </Fragment>
           <div className="signInRegister">{this.showLoginOrSignUp()}</div>
           <div className="createJob">{this.showCreate()}</div>
           <div className="jobDetail">{this.showDetail()}</div>
-          <div>
+          <div className="trackerpage">
             <JobTable2 jobData={this.state.jobs} />
           </div>
+        </div>
+      );
+    } else if (this.state.isLoggedIn && this.state.tab === 'tasks') {
+      return (
+        <div>
+          <Fragment>
+            <Nav
+              displayLoginSignup={this.displayLoginSignup.bind(this)}
+              isLoggedIn={this.state.isLoggedIn}
+              displayCreateJob={this.displayCreateJob.bind(this)}
+              updateStatus={this.updateStatus.bind(this)}
+              updateUserInfo={this.updateUserInfo.bind(this)}
+            />
+            <div>
+              <SelectBar changeTab={this.changeTab.bind(this)} />
+            </div>
+          </Fragment>
+          <div className="signInRegister">{this.showLoginOrSignUp()}</div>
+          <div className="createJob">{this.showCreate()}</div>
+          <div className="jobDetail">{this.showDetail()}</div>
+          <div className="main-body">Google Calendar to do lists thing</div>
+        </div>
+      );
+    } else if (this.state.isLoggedIn && this.state.tab === 'analytics') {
+      return (
+        <div>
+          <Fragment>
+            <Nav
+              displayLoginSignup={this.displayLoginSignup.bind(this)}
+              isLoggedIn={this.state.isLoggedIn}
+              displayCreateJob={this.displayCreateJob.bind(this)}
+              updateStatus={this.updateStatus.bind(this)}
+              updateUserInfo={this.updateUserInfo.bind(this)}
+            />
+            <div>
+              <SelectBar changeTab={this.changeTab.bind(this)} />
+            </div>
+          </Fragment>
+          <div className="signInRegister">{this.showLoginOrSignUp()}</div>
+          <div className="createJob">{this.showCreate()}</div>
+          <div className="jobDetail">{this.showDetail()}</div>
+          <div className="main-body">Analytics thing here</div>
         </div>
       );
     } else {
