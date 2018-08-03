@@ -42,6 +42,7 @@ class SelectBar extends Component {
           <Tab label="Interview" onClick={() => this.props.changeJobFilter('interview')} />
           <Tab label="Offered" onClick={() => this.props.changeJobFilter('offered')} />
           <Tab label="Rejected" onClick={() => this.props.changeJobFilter('rejected')} />
+          <Tab label="Analytics" onClick={() => this.props.changeJobFilter('analytics')} />
         </Tabs>
       </Paper>
     );

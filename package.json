@@ -38,7 +38,7 @@
     "passport": "0.4.0",
     "querystring": "0.2.0",
     "react": "16.4.1",
-    "react-bar-chart": "^0.1.2",
+    "react-d3-components": "^0.9.1",
     "react-dom": "16.4.1",
     "request": "2.87.0",
     "url": "0.11.0"

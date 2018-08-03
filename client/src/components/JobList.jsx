@@ -1,5 +1,6 @@
 import React from 'react';
 import JobMin from './JobMin.jsx';
+import Application from './Application.jsx';
 import { GridList } from '@material-ui/core';
 /**
  * @description This Component is responsible for rendering each job a user has created
@@ -44,9 +45,13 @@ const filteredJobs = (jobData, status, detailOpen) => {
 
 const JobList = props => (
   <div style={styles.root}>
-    <GridList cols={3} cellHeight={180} style={styles.gridList}>
-      {filteredJobs(props.jobData, props.filter, props.detailOpen)}
-    </GridList>
+    {props.filter === 'analytics' ? (
+      <Application />
+    ) : (
+      <GridList cols={3} cellHeight={180} style={styles.gridList}>
+        {filteredJobs(props.jobData, props.filter, props.detailOpen)}
+      </GridList>
+    )}
   </div>
 );
 

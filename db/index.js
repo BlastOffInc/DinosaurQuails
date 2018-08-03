@@ -227,7 +227,7 @@ const _generateStats = data =>
         Object.keys(attributes.toJSON()).forEach(
           (key, resKey) =>
             !['_id', 'jobId', 'callback', 'interview', '__v'].includes(key) &&
-            (response[(resKey = key + ' ' + attributes[key])] = {
+            (response[(resKey = key + attributes[key])] = {
               callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
               interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
               total: 1 + ((response[resKey] && response[resKey].total) || 0),
