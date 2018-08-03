@@ -6,17 +6,9 @@ class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
-        {
-          label: 'True',
-          values: [{ y: 1, x: 'Test 1' }, { y: 2, x: 'Test 2' }, { y: 3, x: 'Test 3' }],
-        },
-        {
-          label: 'False',
-          values: [{ y: 3, x: 'Test 1' }, { y: 2, x: 'Test 2' }, { y: 1, x: 'Test 3' }],
-        },
-      ],
+      data: [{ values: [{ y: 1, x: 'Test 1' }] }],
     };
+    this.colorScale = this.colorScale.bind(this);
   }
   emptyCatch(obj) {
     return obj || { callback: 0, interview: 0, total: 0 };
@@ -62,17 +54,21 @@ class Application extends React.Component {
       .get('/application/analytics', { params: { type: 'All' } })
       .then(({ data }) => this.setState({ data: this.cleanUpData(data) }));
   }
+  colorScale(label) {
+    return label === 'True' ? '#00ff00' : '#ff0000';
+  }
   render() {
     return (
       <div ref="root">
         <div style={{ width: '50%' }}>
           <BarChart
+            groupedBars
             ylabel="Callback Rate"
             width={window.innerWidth * 0.95}
             height={500}
             data={this.state.data}
             margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
-            groupedBars
+            colorScale={this.colorScale}
           />
         </div>
       </div>
