@@ -266,7 +266,7 @@ class EnhancedTable extends React.Component {
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.id}
+                      key={n._id}
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">

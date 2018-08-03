@@ -10,6 +10,7 @@ const jobs = require('./jobs');
 const job = require('./job');
 const PATH = require('path');
 const application = require('./application');
+const jobimport = require('./jobimport.js');
 
 /****** SETUP HEADERS *****/
 app.use((req, res, next) => {
@@ -60,6 +61,8 @@ app.get('/login', require('./login.js'));
 
 app.use('/application', application);
 
+// app.use('/jobimport', jobimport);
+
 app.get('/logout', function(req, res) {
   req.session.destroy(function() {
     res.status(200).json({ message: 'Successful Logout' });
@@ -75,3 +78,17 @@ app.listen(PORT, function() {
 
 //save update
 module.exports = app;
+
+app.get('/joburl', function(req, res) {
+  var link = req.body.link;
+  console.log('line 71 post server', link);
+  util.getJobInfo(link, function(err, data) {
+    if (err) {
+      res.sendStatus(500);
+      console.log('why is the request not going through');
+    } else {
+      console.log('hi');
+      res.send(data);
+    }
+  });
+});

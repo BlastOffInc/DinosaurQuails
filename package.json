@@ -6,7 +6,7 @@
   "scripts": {
     "test": "set NODE_ENV=test&& jest",
     "start": "node ./server/index.js",
-    "start-dev": "nodemon ./server/index.js",
+    "xd": "nodemon ./server/index.js",
     "build-dev": "webpack -d --watch",
     "heroku-postbuild": "webpack -p --progress"
   },
@@ -30,6 +30,7 @@
     "bcrypt-nodejs": "0.0.3",
     "bluebird": "3.5.1",
     "body-parser": "1.18.3",
+    "dom-parser": "^0.1.5",
     "express": "4.16.3",
     "express-session": "1.15.6",
     "material-ui-icons": "^1.0.0-beta.36",
@@ -40,7 +41,7 @@
     "react": "16.4.1",
     "react-d3-components": "^0.9.1",
     "react-dom": "16.4.1",
-    "request": "2.87.0",
+    "request": "^2.87.0",
     "url": "0.11.0"
   },
   "devDependencies": {
