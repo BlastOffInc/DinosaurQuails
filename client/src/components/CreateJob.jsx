@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
+import Checkbox from '@material-ui/core/Checkbox';
 import axios from 'axios';
 
 // This is the component for creating a new job. Since we need to host a form in the component, follow
@@ -51,6 +52,7 @@ class CreateJob extends React.Component {
 
     this.handleClose = this.handleClose.bind(this);
     this.createNewJob = this.createNewJob.bind(this);
+    this.handleCheck = this.handleCheck.bind(this);
   }
 
   /**
@@ -81,6 +83,11 @@ class CreateJob extends React.Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  handleCheck({ target }) {
+    this.state.analytics[target.name] = target.checked;
+    this.setState({ analytics: this.state.analytics });
   }
 
   // Event listener for create a new job, and bubble the event back to trigger the
@@ -300,6 +307,82 @@ class CreateJob extends React.Component {
                   <option value="offered">Offered</option>
                   <option value="rejected">Rejected</option>
                 </select>
+              </div>
+              <div>
+                <label>Customized Fully: </label>
+                <Checkbox
+                  name="customizedFull"
+                  checked={this.state.analytics.customizedFull}
+                  onChange={this.handleCheck}
+                />
+              </div>
+              <div>
+                <label>Customized Cover Letter: </label>
+                <Checkbox
+                  name="customizedCoverLetter"
+                  checked={this.state.analytics.customizedCoverLetter}
+                  onChange={this.handleCheck}
+                />
+              </div>
+              <div>
+                <label>Customized Sotware Engineering Projects: </label>
+                <Checkbox
+                  name="customizedSotwareEngineeringProjects"
+                  checked={this.state.analytics.customizedSotwareEngineeringProjects}
+                  onChange={this.handleCheck}
+                />
+              </div>
+              <div>
+                <label>Customized Personal Section: </label>
+                <Checkbox
+                  name="customizedPersonal"
+                  checked={this.state.analytics.customizedPersonal}
+                  onChange={this.handleCheck}
+                />
+              </div>
+              <div>
+                <label>Mentioned Non-Technical Experience: </label>
+                <Checkbox
+                  name="mentionedNonTechnicalExperience"
+                  checked={this.state.analytics.mentionedNonTechnicalExperience}
+                  onChange={this.handleCheck}
+                />
+              </div>
+              <div>
+                <label>Included Codebase Links: </label>
+                <Checkbox name="codeLinks" checked={this.state.analytics.codeLinks} onChange={this.handleCheck} />
+              </div>
+              <div>
+                <label>Included Deployed Links: </label>
+                <Checkbox
+                  name="deployedLinks"
+                  checked={this.state.analytics.deployedLinks}
+                  onChange={this.handleCheck}
+                />
+              </div>
+              <div>
+                <label>Had A Referral: </label>
+                <Checkbox name="referral" checked={this.state.analytics.referral} onChange={this.handleCheck} />
+              </div>
+              <div>
+                <label>Used A Recruiter: </label>
+                <Checkbox
+                  name="usedARecruiter"
+                  checked={this.state.analytics.usedARecruiter}
+                  onChange={this.handleCheck}
+                />
+              </div>
+              <div>
+                <label>Networked: </label>
+                <Checkbox name="networked" checked={this.state.analytics.networked} onChange={this.handleCheck} />
+              </div>
+              <div>
+                <label>Have A In Company Connection: </label>
+                <Checkbox
+                  name="inCompanyConnection"
+                  checked={this.state.analytics.inCompanyConnection}
+                  onChange={this.handleCheck}
+                />
               </div>
             </DialogContentText>
           </DialogContent>

@@ -5,12 +5,6 @@ let application = express.Router();
 
 application
   .route('/')
-  .get((req, res) =>
-    db
-      .getMyApps(req.query)
-      .then(data => res.status(200).send(data))
-      .catch(err => res.status(400).send(err))
-  )
   .post((req, res) =>
     db
       .addApplication(req.body)

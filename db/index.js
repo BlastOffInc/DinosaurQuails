@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const hash = require('./helper.js');
 const bcrypt = require('bcrypt-nodejs');
 
-const DB = process.env.MONGODB_URI || 'mongodb://localhost/dinasour';
+const DB = process.env.MONGODB_URI || 'mongodb://localhost/jobconcat';
 
 // Connect with Mongo DB
 mongoose.connect(DB);
@@ -136,7 +136,8 @@ let createJob = (fieldInfo, callback) => {
       callback(error, null);
     } else {
       console.log('saved job to db', savedJob);
-      callback(null, savedJob);
+      fieldInfo.analytics.jobId = savedJob._id;
+      addApplication(fieldInfo.analytics).then(() => callback(null, savedJob));
     }
   });
 };
@@ -146,7 +147,19 @@ const getJobs = (query, callback) => {
   console.log(query);
   Job.find(query)
     .sort({ postDate: 'desc' })
-    .then(jobs => callback(null, jobs))
+    .then(jobs => {
+      let response = [];
+      Promise.all(
+        jobs.map((job, i) =>
+          Application.findOne({ jobId: job._id }).then(app => {
+            response[i] = job.toJSON();
+            response[i].appId = app._id;
+            response[i].callback = app.callback;
+            response[i].interview = app.interview;
+          })
+        )
+      ).then(() => callback(null, response));
+    })
     .catch(err => callback(err, null));
 };
 
@@ -169,7 +182,7 @@ const removeJob = (remove, callback) => {
 };
 
 const applicationSchema = mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
   customizedFull: Boolean,
   customizedPersonal: Boolean,
   customizedSotwareEngineeringProjects: Boolean,
@@ -187,13 +200,12 @@ const applicationSchema = mongoose.Schema({
 
 const Application = mongoose.model('Application', applicationSchema);
 
-const addApplication = appData =>
-  User.find({ userName: appData.userName }).then(user =>
-    Application.create(delete appData.userName && (appData.userId = user[0]._id) && appData)
-  );
+function addApplication(appData) {
+  return Application.create(appData);
+}
 
-const getMyApps = ({ userName }) =>
-  User.find({ userName: userName }).then(user => Application.find({ userId: user[0]._id }));
+const getMyApps = ({ id }) =>
+  Job.find({ userId: id }).then(jobs => Promise.all(jobs.map(job => Application.findOne({ jobId: job._id }))));
 
 const gotCallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
 
@@ -214,7 +226,7 @@ const _generateStats = data =>
       (response, attributes) =>
         Object.keys(attributes.toJSON()).forEach(
           (key, resKey) =>
-            !['_id', 'userId', 'callback', 'interview', '__v'].includes(key) &&
+            !['_id', 'jobId', 'callback', 'interview', '__v'].includes(key) &&
             (response[(resKey = key + ' ' + attributes[key])] = {
               callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
               interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
@@ -236,8 +248,6 @@ module.exports.createUser = createUser;
 module.exports.login = login;
 module.exports.createJob = createJob;
 module.exports.getJobs = getJobs;
-exports.addApplication = addApplication;
-exports.getMyApps = getMyApps;
 exports.gotCallback = gotCallback;
 exports.gotInterview = gotInterview;
 exports.getMyStats = getMyStats;

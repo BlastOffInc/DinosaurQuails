@@ -34,6 +34,7 @@ const jobPoster = (req, res) => {
     state: req.body.state || 'none',
     payRange: req.body.payRange || '',
     logoUrl: 'https://i.imgur.com/usLTbBq.png',
+    analytics: req.body.analytics,
   };
 
   // util.logoGo(fieldInfo.webSite, (error, logoUrl) => {
