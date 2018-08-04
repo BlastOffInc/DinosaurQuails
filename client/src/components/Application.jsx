@@ -53,7 +53,6 @@ class Application extends React.Component {
       this.setState({
         dataCallback: this.cleanUpData(data, 'callback'),
         dataInterview: this.cleanUpData(data, 'interview'),
-        dataTotal: this.cleanUpData(data, 'total'),
       })
     );
   }
@@ -69,7 +68,7 @@ class Application extends React.Component {
         <BarChart
           groupedBars
           width={window.innerWidth * 0.95}
-          height={300}
+          height={398}
           data={this.state.dataCallback}
           margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
           colorScale={this.colorScaleEven}
@@ -78,20 +77,11 @@ class Application extends React.Component {
         <BarChart
           groupedBars
           width={window.innerWidth * 0.95}
-          height={300}
+          height={398}
           data={this.state.dataInterview}
           margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
           colorScale={this.colorScaleOdd}
           yAxis={{ label: 'Interview Rate' }}
-        />
-        <BarChart
-          groupedBars
-          width={window.innerWidth * 0.95}
-          height={193}
-          data={this.state.dataTotal}
-          margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
-          colorScale={this.colorScaleEven}
-          yAxis={{ label: 'Total Occurrences' }}
         />
       </React.Fragment>
     );
