@@ -53,7 +53,6 @@ class CreateJob extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.createNewJob = this.createNewJob.bind(this);
     this.handleCheck = this.handleCheck.bind(this);
-    this.getJobInfoFromURL = this.getJobInfoFromURL.bind(this);
   }
 
   /**
@@ -80,6 +79,7 @@ class CreateJob extends React.Component {
     var target = event.target;
     var value = target.value;
     var name = target.name;
+    console.log(value);
     this.setState({
       [name]: value,
     });
@@ -127,10 +127,17 @@ class CreateJob extends React.Component {
         console.log(response);
       })
       .catch(err => console.log(err));
+    // axios
+    //   .get(endpoint, params, callback)
+    //   .then(response => {
+    //     console.log(response);
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   // JSX renders html elements
   render() {
+    console.log(this.state.jobImportURL);
     return (
       <div>
         <Dialog
@@ -164,7 +171,12 @@ class CreateJob extends React.Component {
             </DialogContentText>
           </DialogContent>
 
-          <Button variant="outlined" onClick={this.getJobInfoFromURL}>
+          <Button
+            variant="outlined"
+            onClick={e => {
+              this.getJobInfoFromURL();
+            }}
+          >
             Import from URL
           </Button>
 
@@ -291,9 +303,7 @@ class CreateJob extends React.Component {
                   onKeyUp={e => this.handleEnter(e, this.createNewJob.bind(this))}
                 >
                   <option value="">Please choose an option</option>
-                  <option value="interested">Interested </option>
-                  <option value="pending">Pending/Applied</option>
-                  <option value="interview">Interview</option>
+                  <option value="pending">Pending</option>
                   <option value="offered">Offered</option>
                   <option value="rejected">Rejected</option>
                 </select>

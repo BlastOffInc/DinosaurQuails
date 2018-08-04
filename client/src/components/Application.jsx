@@ -5,77 +5,95 @@ import axios from 'axios';
 class Application extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: [
-        {
-          label: 'True',
-          values: [{ y: 1, x: 'Test 1' }, { y: 2, x: 'Test 2' }, { y: 3, x: 'Test 3' }],
-        },
-        {
-          label: 'False',
-          values: [{ y: 3, x: 'Test 1' }, { y: 2, x: 'Test 2' }, { y: 1, x: 'Test 3' }],
-        },
-      ],
-    };
+    this.state = {};
+    this.colorScaleEven = this.colorScaleEven.bind(this);
+    this.colorScaleOdd = this.colorScaleOdd.bind(this);
   }
   emptyCatch(obj) {
     return obj || { callback: 0, interview: 0, total: 0 };
   }
-  cleanUpData(data) {
+  cleanUpData(data, type) {
     return [
       {
         label: 'True',
         values: [
-          { y: this.emptyCatch(data.customizedFulltrue).callback, x: 'Customised: Fully' },
-          { y: this.emptyCatch(data.customizedPersonaltrue).callback, x: 'Personal Section' },
-          { y: this.emptyCatch(data.customizedSotwareEngineeringProjectstrue).callback, x: 'Projects' },
-          { y: this.emptyCatch(data.customizedCoverLettertrue).callback, x: 'Cover Letter' },
-          { y: this.emptyCatch(data.mentionedNonTechnicalExperiencetrue).callback, x: 'Added Non-Tech Info' },
-          { y: this.emptyCatch(data.codeLinkstrue).callback, x: 'Had Code Links' },
-          { y: this.emptyCatch(data.deployedLinkstrue).callback, x: 'Had Deployed Links' },
-          { y: this.emptyCatch(data.referraltrue).callback, x: 'Had A Referral' },
-          { y: this.emptyCatch(data.usedARecruitertrue).callback, x: 'Used A Recruiter' },
-          { y: this.emptyCatch(data.networkedtrue).callback, x: 'Networked' },
-          { y: this.emptyCatch(data.inCompanyConnectiontrue).callback, x: 'Had A Connection' },
+          { y: this.emptyCatch(data.customizedFulltrue)[type], x: 'Customised: Fully' },
+          { y: this.emptyCatch(data.customizedPersonaltrue)[type], x: 'Personal Section' },
+          { y: this.emptyCatch(data.customizedSotwareEngineeringProjectstrue)[type], x: 'Projects' },
+          { y: this.emptyCatch(data.customizedCoverLettertrue)[type], x: 'Cover Letter' },
+          { y: this.emptyCatch(data.mentionedNonTechnicalExperiencetrue)[type], x: 'Added Non-Tech Info' },
+          { y: this.emptyCatch(data.codeLinkstrue)[type], x: 'Had Code Links' },
+          { y: this.emptyCatch(data.deployedLinkstrue)[type], x: 'Had Deployed Links' },
+          { y: this.emptyCatch(data.referraltrue)[type], x: 'Had A Referral' },
+          { y: this.emptyCatch(data.usedARecruitertrue)[type], x: 'Used A Recruiter' },
+          { y: this.emptyCatch(data.networkedtrue)[type], x: 'Networked' },
+          { y: this.emptyCatch(data.inCompanyConnectiontrue)[type], x: 'Had A Connection' },
         ],
       },
       {
         label: 'False',
         values: [
-          { y: this.emptyCatch(data.customizedFullfalse).callback, x: 'Customised: Fully' },
-          { y: this.emptyCatch(data.customizedPersonalfalse).callback, x: 'Personal Section' },
-          { y: this.emptyCatch(data.customizedSotwareEngineeringProjectsfalse).callback, x: 'Projects' },
-          { y: this.emptyCatch(data.customizedCoverLetterfalse).callback, x: 'Cover Letter' },
-          { y: this.emptyCatch(data.mentionedNonTechnicalExperiencefalse).callback, x: 'Added Non-Tech Info' },
-          { y: this.emptyCatch(data.codeLinksfalse).callback, x: 'Had Code Links' },
-          { y: this.emptyCatch(data.deployedLinksfalse).callback, x: 'Had Deployed Links' },
-          { y: this.emptyCatch(data.referralfalse).callback, x: 'Had A Referral' },
-          { y: this.emptyCatch(data.usedARecruiterfalse).callback, x: 'Used A Recruiter' },
-          { y: this.emptyCatch(data.networkedfalse).callback, x: 'Networked' },
-          { y: this.emptyCatch(data.inCompanyConnectionfalse).callback, x: 'Had A Connection' },
+          { y: this.emptyCatch(data.customizedFullfalse)[type], x: 'Customised: Fully' },
+          { y: this.emptyCatch(data.customizedPersonalfalse)[type], x: 'Personal Section' },
+          { y: this.emptyCatch(data.customizedSotwareEngineeringProjectsfalse)[type], x: 'Projects' },
+          { y: this.emptyCatch(data.customizedCoverLetterfalse)[type], x: 'Cover Letter' },
+          { y: this.emptyCatch(data.mentionedNonTechnicalExperiencefalse)[type], x: 'Added Non-Tech Info' },
+          { y: this.emptyCatch(data.codeLinksfalse)[type], x: 'Had Code Links' },
+          { y: this.emptyCatch(data.deployedLinksfalse)[type], x: 'Had Deployed Links' },
+          { y: this.emptyCatch(data.referralfalse)[type], x: 'Had A Referral' },
+          { y: this.emptyCatch(data.usedARecruiterfalse)[type], x: 'Used A Recruiter' },
+          { y: this.emptyCatch(data.networkedfalse)[type], x: 'Networked' },
+          { y: this.emptyCatch(data.inCompanyConnectionfalse)[type], x: 'Had A Connection' },
         ],
       },
     ];
   }
   componentDidMount() {
-    axios
-      .get('/application/analytics', { params: { type: 'All' } })
-      .then(({ data }) => this.setState({ data: this.cleanUpData(data) }));
+    axios.get('/application/analytics', { params: { type: 'All' } }).then(({ data }) =>
+      this.setState({
+        dataCallback: this.cleanUpData(data, 'callback'),
+        dataInterview: this.cleanUpData(data, 'interview'),
+        dataTotal: this.cleanUpData(data, 'total'),
+      })
+    );
+  }
+  colorScaleEven(label) {
+    return label === 'True' ? '#22AF88' : '#228FAF';
+  }
+  colorScaleOdd(label) {
+    return label === 'True' ? '#8822AF ' : '#2249AF';
   }
   render() {
     return (
-      <div ref="root">
-        <div style={{ width: '50%' }}>
-          <BarChart
-            ylabel="Callback Rate"
-            width={window.innerWidth * 0.95}
-            height={500}
-            data={this.state.data}
-            margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
-            groupedBars
-          />
-        </div>
-      </div>
+      <React.Fragment>
+        <BarChart
+          groupedBars
+          width={window.innerWidth * 0.95}
+          height={300}
+          data={this.state.dataCallback}
+          margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
+          colorScale={this.colorScaleEven}
+          yAxis={{ label: 'Callback Rate' }}
+        />
+        <BarChart
+          groupedBars
+          width={window.innerWidth * 0.95}
+          height={300}
+          data={this.state.dataInterview}
+          margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
+          colorScale={this.colorScaleOdd}
+          yAxis={{ label: 'Interview Rate' }}
+        />
+        <BarChart
+          groupedBars
+          width={window.innerWidth * 0.95}
+          height={193}
+          data={this.state.dataTotal}
+          margin={{ top: 20, right: 20, bottom: 30, left: 40 }}
+          colorScale={this.colorScaleEven}
+          yAxis={{ label: 'Total Occurrences' }}
+        />
+      </React.Fragment>
     );
   }
 }
