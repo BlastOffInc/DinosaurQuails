@@ -204,8 +204,8 @@ function addApplication(appData) {
   return Application.create(appData);
 }
 
-const getMyApps = ({ id }) =>
-  Job.find({ userId: id }).then(jobs => Promise.all(jobs.map(job => Application.findOne({ jobId: job._id }))));
+const getMyApps = ({ userId }) =>
+  Job.find({ userId: userId }).then(jobs => Promise.all(jobs.map(job => Application.findOne({ jobId: job._id }))));
 
 const gotCallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
 
@@ -237,7 +237,19 @@ const _generateStats = data =>
     )
   );
 
-const getMyStats = user => getMyApps(user).then(_generateStats);
+const getMyStats = user =>
+  getMyApps(user)
+    .then(data =>
+      data.reduce(
+        (response, attributes) => {
+          response.callback += attributes.callback;
+          response.interview += attributes.interview;
+          return response;
+        },
+        { callback: 0, interview: 0, total: data.length }
+      )
+    )
+    .then(data => (data.callback *= 100 / data.total) && (data.interview *= 100 / data.total) && data);
 
 const getAllStats = () => Application.find().then(_generateStats);
 
