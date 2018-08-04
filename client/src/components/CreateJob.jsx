@@ -302,9 +302,9 @@ class CreateJob extends React.Component {
                   onChange={this.handleChange.bind(this)}
                   onKeyUp={e => this.handleEnter(e, this.createNewJob.bind(this))}
                 >
-                  <option value="">Please choose an option</option> <option value="pending">Pending</option>
-                  <option value="interested">Interested</option>
-                  <option value="pending">Pending</option>
+                  <option value="">Please choose an option</option>
+                  <option value="applied">Applied</option>
+                  <option value="callback">Callback</option>
                   <option value="interview">Interview</option>
                   <option value="offered">Offered</option>
                   <option value="rejected">Rejected</option>

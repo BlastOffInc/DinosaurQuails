@@ -208,11 +208,11 @@ class JobDetail extends React.Component {
                     <MenuItem value="">
                       <em>Status</em>
                     </MenuItem>
-                    <MenuItem value="interested">Interested</MenuItem>
-                    <MenuItem value="pending">Pending/Applied</MenuItem>
-                    <MenuItem value="interview">Interview</MenuItem>
-                    <MenuItem value="offered">Offered</MenuItem>
-                    <MenuItem value="rejected">Rejected</MenuItem>
+                    <MenuItem value="Applied">Applied</MenuItem>
+                    <MenuItem value="Callback">Callback</MenuItem>
+                    <MenuItem value="Interview">Interview</MenuItem>
+                    <MenuItem value="Offered">Offered</MenuItem>
+                    <MenuItem value="Rejected">Rejected</MenuItem>
                   </Select>
                 </FormControl>
                 <TextField
