@@ -248,7 +248,11 @@ const getMyStats = user =>
         { callback: 0, interview: 0, total: data.length }
       )
     )
-    .then(data => (data.callback *= 100 / data.total) && (data.interview *= 100 / data.total) && data);
+    .then(data => {
+      data.callback *= 100 / data.total;
+      data.interview *= 100 / data.total;
+      return data;
+    });
 
 const getAllStats = () => Application.find().then(_generateStats);
 
