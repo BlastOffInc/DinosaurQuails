@@ -43,6 +43,7 @@ app.get('/', util.checkUser, (req, res) => {
  * Every time we attempted to utilize it, the server wouldn't reach the endpoint.
  */
 app.post('/jobs', jobs);
+app.get('/jobs/sampleData', jobs);
 app.get('/jobs', jobs);
 
 app.put('/job', job);
