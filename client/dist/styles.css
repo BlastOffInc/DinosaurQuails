@@ -47,13 +47,16 @@ body {
 .main-body {
   border: 3px solid #7dce94;
   height: 100%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 3%;
 }
 
 /* Dashboard */
 .dashboard {
   display: grid;
   height: 100%;
-  grid-template-columns: 700px 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 350px 1fr;
   grid-template-areas:
     'jobs analytics tasks'

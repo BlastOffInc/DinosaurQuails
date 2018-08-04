@@ -211,6 +211,7 @@ class App extends Component {
 
   detailOpen(currentJob) {
     console.log('detail open is working');
+    console.log(currentJob);
     this.setState({
       selectedJob: currentJob,
       detailOpen: true,
@@ -267,6 +268,7 @@ class App extends Component {
               />
             </div>
           </Fragment>
+
           <div className="signInRegister">{this.showLoginOrSignUp()}</div>
           <div className="createJob">{this.showCreate()}</div>
           <div className="jobDetail">{this.showDetail()}</div>
@@ -291,7 +293,7 @@ class App extends Component {
           <div className="createJob">{this.showCreate()}</div>
           <div className="jobDetail">{this.showDetail()}</div>
           <div className="trackerpage">
-            <JobTable2 jobData={this.state.jobs} />
+            <JobTable2 jobData={this.state.jobs} detailOpen={this.detailOpen.bind(this)} />
           </div>
         </div>
       );
