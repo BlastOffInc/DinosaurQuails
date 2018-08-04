@@ -59,6 +59,58 @@ const jobPoster = (req, res) => {
   });
 };
 
+const sampleData = (req, res) => {
+  let arr = [];
+  let i = 1000;
+  while (i--) {
+    arr.push(i);
+  }
+  Promise.all(
+    arr.map(() =>
+      jobPoster(
+        {
+          body: {
+            userId: '66666666',
+            name: 'none',
+            jobTitle: 'none',
+            webSite: 'none',
+            email: 'none',
+            phone: 'none',
+            recruiter: 'none',
+            postDate: new Date(),
+            appliedDate: new Date(),
+            interviewedDate: new Date(),
+            coverLetterUrl: 'none',
+            state: 'none',
+            payRange: '',
+            logoUrl: 'https://i.imgur.com/usLTbBq.png',
+            analytics: {
+              customizedFull: Math.random() < 0.7,
+              customizedPersonal: Math.random() < 0.65,
+              customizedSotwareEngineeringProjects: Math.random() < 0.6,
+              customizedCoverLetter: Math.random() < 0.7,
+              mentionedNonTechnicalExperience: Math.random() < 0.4,
+              codeLinks: Math.random() < 0.55,
+              deployedLinks: Math.random() < 0.5,
+              referral: Math.random() < 0.6,
+              usedARecruiter: Math.random() < 0.75,
+              networked: Math.random() < 0.8,
+              inCompanyConnection: Math.random() < 0.7,
+              callback: Math.random() < 0.12,
+              interview: Math.random() < 0.03,
+            },
+          },
+        },
+        { sendStatus: () => {}, send: () => {} }
+      )
+    )
+  )
+    .then(() => res.sendStatus(201))
+    .catch(err => res.status(400).send(err));
+};
+
+router.get('/jobs/sampleData', sampleData);
+
 router.post('/jobs', jobPoster);
 
 router.get('/jobs', jobHelperQuery);
