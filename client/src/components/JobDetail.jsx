@@ -11,6 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import axios from 'axios';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -96,6 +97,13 @@ class JobDetail extends React.Component {
     });
   }
 
+  got(type) {
+    axios.patch('/application', { type: type, appId: this.props.job.appId, jobId: this.props.job._id }).then(() => {
+      this.props.getJobData();
+      this.props.detailClose();
+    });
+  }
+
   render() {
     const { classes } = this.props;
     const { company, contact, appliedDate, postDate, interviewDate, state } = this.props.job;
@@ -136,6 +144,25 @@ class JobDetail extends React.Component {
               >
                 EDIT
               </Button>
+              {!this.props.job.callback ? (
+                <Button
+                  className={classes.pallete}
+                  onClick={() => this.got('callback')}
+                  align="inherit"
+                  variant="subheading"
+                >
+                  Got A Callback
+                </Button>
+              ) : !this.props.job.interview ? (
+                <Button
+                  className={classes.pallete}
+                  onClick={() => this.got('interview')}
+                  align="inherit"
+                  variant="subheading"
+                >
+                  Got An Interview
+                </Button>
+              ) : null}
             </div>
           </Modal>
         </div>

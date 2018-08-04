@@ -12,7 +12,8 @@ application
       .catch(err => res.status(400).send(err))
   )
   .patch((req, res) =>
-    db['got' + req.query.type](req.query) //? type: 'Callback' or 'Interview'
+    db
+      .got(req.body) //? type: 'callback' or 'interview'
       .then(() => res.sendStatus(201))
       .catch(err => res.status(400).send(err))
   );

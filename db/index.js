@@ -207,9 +207,8 @@ function addApplication(appData) {
 const getMyApps = ({ userId }) =>
   Job.find({ userId: userId }).then(jobs => Promise.all(jobs.map(job => Application.findOne({ jobId: job._id }))));
 
-const gotCallback = ({ id }) => Application.findByIdAndUpdate(id, { callback: true });
-
-const gotInterview = ({ id }) => Application.findByIdAndUpdate(id, { interview: true });
+const got = ({ appId, jobId, type }) =>
+  Application.findByIdAndUpdate(appId, { [type]: true }).then(() => Job.findByIdAndUpdate(jobId, { state: type }));
 
 const _analytics = data =>
   Object.keys(data).forEach(key => {
@@ -260,7 +259,6 @@ module.exports.createUser = createUser;
 module.exports.login = login;
 module.exports.createJob = createJob;
 module.exports.getJobs = getJobs;
-exports.gotCallback = gotCallback;
-exports.gotInterview = gotInterview;
+exports.got = got;
 exports.getMyStats = getMyStats;
 exports.getAllStats = getAllStats;

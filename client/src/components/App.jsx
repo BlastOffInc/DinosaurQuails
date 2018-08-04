@@ -350,9 +350,7 @@ class App extends Component {
           <div className="signInRegister">{this.showLoginOrSignUp()}</div>
           <div className="createJob">{this.showCreate()}</div>
           <div className="jobDetail">{this.showDetail()}</div>
-          <div className="main-body">
-            <Application />
-          </div>
+          <Application />
         </div>
       );
     } else {
