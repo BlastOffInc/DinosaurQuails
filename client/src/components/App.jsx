@@ -46,7 +46,6 @@ class App extends Component {
       .get(endpoint, params)
       .then(response => {
         // update respective data
-        console.log(response);
         callback(response);
       })
       .catch(err => console.log(err));
@@ -82,15 +81,17 @@ class App extends Component {
   }
 
   retrieveStats() {
+    console.log('hi on line 84');
     axios
-      .get('/application/analytics', { params: { type: 'My', userId: this.state.userId } })
-      .then(data => this.setState({ appStats: data }))
+      .get('/application/analytics', { params: { type: 'My', userId: this.state.user.id } })
+      .then(({ data }) => console.log(data) || this.setState({ appStats: data }))
       .catch(err => console.log(err));
   }
 
-  componentDidMount() {
-    this.retrieveStats();
-  }
+  // componentDidMount() {
+  //   console.log('hi on line 91');
+  //   this.retrieveStats();
+  // }
 
   /** @description This function changes the loginSignupButtonIsClicked state to retermine if the login or register modal should popup for user to input information */
   displayLoginSignup(id) {
@@ -150,6 +151,7 @@ class App extends Component {
         this.setState({
           jobs: response.data,
         });
+        this.retrieveStats();
       });
     }
   }

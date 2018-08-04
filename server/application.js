@@ -20,7 +20,7 @@ application
 
 application.route('/analytics').get((req, res) =>
   db['get' + req.query.type + 'Stats'](req.query) //? type: 'All' or 'My'
-    .then(data => res.status(200).send(data))
+    .then(data => console.log(data) || res.status(200).send(data))
     .catch(err => res.status(400).send(err))
 );
 
