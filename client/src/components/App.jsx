@@ -31,6 +31,7 @@ class App extends Component {
       tab: 'all',
       view: false,
       createView: false,
+      appStats: {},
     };
     this.showLoginOrSignUp = this.showLoginOrSignUp.bind(this);
     this.submitData = this.submitData.bind(this);
@@ -78,6 +79,17 @@ class App extends Component {
         callback(response);
       })
       .catch(err => console.log(err));
+  }
+
+  retrieveStats() {
+    axios
+      .get('/application/analytics', { params: { type: 'My', userId: this.state.userId } })
+      .then(data => this.setState({ appStats: data }))
+      .catch(err => console.log(err));
+  }
+
+  componentDidMount() {
+    this.retrieveStats();
   }
 
   /** @description This function changes the loginSignupButtonIsClicked state to retermine if the login or register modal should popup for user to input information */
@@ -258,20 +270,22 @@ class App extends Component {
               updateUserInfo={this.updateUserInfo.bind(this)}
             />
             <SelectBar changeTab={this.changeTab.bind(this)} />
-            <div>
-              {/* was in SelectBar changeJobFilter={this.changeJobFilter.bind(this)} */}
-              <JobList
-                className="jobs"
-                detailOpen={this.detailOpen.bind(this)}
-                jobData={this.state.jobs}
-                filter={this.state.filter}
-              />
-            </div>
           </Fragment>
+          <div className="dashboard">
+            <div className="latestjobs">
+              <div>Latest Applications </div>
+              <JobList detailOpen={this.detailOpen.bind(this)} jobData={this.state.jobs} filter={this.state.filter} />
+            </div>
+            <div className="stats">
+              Couple stats about yo job progress
+              <div>Active Applications, Callback Rate, Interview Rate</div>
+            </div>
+            <div className="tasks">Fun list of todos</div>
 
-          <div className="signInRegister">{this.showLoginOrSignUp()}</div>
-          <div className="createJob">{this.showCreate()}</div>
-          <div className="jobDetail">{this.showDetail()}</div>
+            <div className="signInRegister">{this.showLoginOrSignUp()}</div>
+            <div className="createJob">{this.showCreate()}</div>
+            <div className="jobDetail">{this.showDetail()}</div>
+          </div>
         </div>
       );
     } else if (this.state.isLoggedIn && this.state.tab === 'tracker') {

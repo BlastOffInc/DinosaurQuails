@@ -1,10 +1,9 @@
+html,
 body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.landing {
+  font-family: 'Roboto', Arial, sans-serif;
   color: #7c7c7c;
 }
+/* Landing */
 
 .landing > span {
   margin-top: 5%;
@@ -54,39 +53,65 @@ body {
 
 /* Dashboard */
 .dashboard {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 10px;
   display: grid;
   height: 100%;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 350px 1fr;
+  grid-template-columns: 1 2fr;
+  grid-template-rows: 1fr 1fr;
   grid-template-areas:
-    'jobs analytics tasks'
-    'jobs tracker tracker';
-}
-
-.jobs {
-  grid-area: jobs;
-  text-align: center;
-  padding: 10px;
-  border: 2px solid #7dce94;
-}
-
-.analytics {
-  grid-area: analytics;
-  text-align: center;
-  padding: 10px;
-  border: 2px solid #7dce94;
+    'tasks latestjobs'
+    'tasks stats';
 }
 
 .tasks {
   grid-area: tasks;
   text-align: center;
-  padding: 10px;
+  margin: 10px;
+  padding: 5px;
   border: 2px solid #7dce94;
+  border-radius: 5px;
 }
 
-.tracker {
-  grid-area: tasks;
+.latestjobs {
+  grid-area: latestjobs;
   text-align: center;
-  padding: 10px;
+  margin: 10px;
+  padding: 5px;
   border: 2px solid #7dce94;
+  border-radius: 5px;
 }
+
+.stats {
+  grid-area: stats;
+  text-align: center;
+  margin: 10px;
+  padding: 5px;
+  border: 2px solid #7dce94;
+  border-radius: 5px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: 'activeapps callbackrate interviewrate';
+}
+
+/* .activeapps {
+  grid-area: activeapps;
+  padding: 2px;
+  height: 100%;
+  border: 1px solid #7dce94;
+}
+
+.callbackrate {
+  grid-area: callbackrate;
+  padding: 2px;
+  height: 100%;
+}
+
+.interviewrate {
+  grid-area: interviewrate;
+  padding: 2px;
+  height: 100%;
+} */
+
+/* Dashboard Stats Box */

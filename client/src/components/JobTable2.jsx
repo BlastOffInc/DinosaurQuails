@@ -186,6 +186,7 @@ class EnhancedTable extends React.Component {
       page: 0,
       rowsPerPage: 10,
     };
+    this.detailOpen = props.detailOpen;
   }
 
   handleRequestSort = (event, property) => {
@@ -263,6 +264,7 @@ class EnhancedTable extends React.Component {
                     <TableRow
                       hover
                       onClick={event => this.handleClick(event, job._id)}
+                      onClick={event => console.log('hi')}
                       onClick={event => this.props.detailOpen(job)}
                       role="checkbox"
                       aria-checked={isSelected}
