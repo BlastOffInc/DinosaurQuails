@@ -81,7 +81,6 @@ class App extends Component {
   }
 
   retrieveStats() {
-    console.log('hi on line 84');
     axios
       .get('/application/analytics', { params: { type: 'My', userId: this.state.user.id } })
       .then(({ data }) => console.log(data) || this.setState({ appStats: data }))
@@ -276,14 +275,35 @@ class App extends Component {
           <div className="dashboard">
             <div className="latestjobs">
               <div>Latest Applications </div>
-              <JobList detailOpen={this.detailOpen.bind(this)} jobData={this.state.jobs} filter={this.state.filter} />
+              <JobList
+                detailOpen={this.detailOpen.bind(this)}
+                jobData={this.state.jobs.slice(0, 3)}
+                filter={this.state.filter}
+              />
             </div>
+
             <div className="stats">
-              Couple stats about yo job progress
-              <div>Active Applications, Callback Rate, Interview Rate</div>
+              <div className="statstitle">Stats</div>
+              <div className="activeapps">
+                Applications
+                <div>
+                  <h1>{this.state.appStats.total}</h1>
+                </div>
+              </div>
+              <div className="callbackrate">
+                Callback Rate
+                <div>
+                  <h1>{this.state.appStats.callback}%</h1>
+                </div>
+              </div>
+              <div className="interviewrate">
+                Interview Rate
+                <div>
+                  <h1>{this.state.appStats.interview}%</h1>
+                </div>
+              </div>
             </div>
             <div className="tasks">Fun list of todos</div>
-
             <div className="signInRegister">{this.showLoginOrSignUp()}</div>
             <div className="createJob">{this.showCreate()}</div>
             <div className="jobDetail">{this.showDetail()}</div>
