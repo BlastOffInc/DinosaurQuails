@@ -137,6 +137,9 @@ let createJob = (fieldInfo, callback) => {
     } else {
       console.log('saved job to db', savedJob);
       fieldInfo.analytics.jobId = savedJob._id;
+      fieldInfo.analytics.callback =
+        fieldInfo.state === 'callback' || fieldInfo.state === 'interview' || fieldInfo.state === 'offered';
+      fieldInfo.analytics.interview = fieldInfo.state === 'interview' || fieldInfo.state === 'offered';
       addApplication(fieldInfo.analytics).then(() => callback(null, savedJob));
     }
   });
