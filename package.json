@@ -6,7 +6,7 @@
   "scripts": {
     "test": "set NODE_ENV=test&& jest",
     "start": "node ./server/index.js",
-    "xd": "nodemon ./server/index.js",
+    "start-dev": "nodemon ./server/index.js",
     "build-dev": "webpack -d --watch",
     "heroku-postbuild": "webpack -p --progress"
   },
