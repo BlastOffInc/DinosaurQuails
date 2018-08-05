@@ -47,13 +47,6 @@ class EnhancedTableHead extends React.Component {
     return (
       <TableHead>
         <TableRow>
-          {/* <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-          </TableCell> */}
           {columnData.map(column => {
             return (
               <TableCell
@@ -83,7 +76,7 @@ class EnhancedTableHead extends React.Component {
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
+  // onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -200,14 +193,6 @@ class EnhancedTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
-  // handleSelectAllClick = (event, checked) => {
-  //   if (checked) {
-  //     this.setState(state => ({ selected: state.data.map(n => n.id) }));
-  //     return;
-  //   }
-  //   this.setState({ selected: [] });
-  // };
-
   handleClick = (event, id) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
@@ -272,9 +257,6 @@ class EnhancedTable extends React.Component {
                       key={job._id}
                       selected={isSelected}
                     >
-                      {/* <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell> */}
                       <TableCell component="th" scope="row">
                         {job.company.name}
                       </TableCell>
