@@ -171,13 +171,16 @@ let createJob = (fieldInfo, callback) => {
 const getJobs = (query, callback) => {
   console.log(query);
   Job.find(query)
-<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
-    .sort({ postDate: 'desc' })
+    .sort({
+      postDate: 'desc'
+    })
     .then(jobs => {
       let response = [];
       Promise.all(
         jobs.map((job, i) =>
-          Application.findOne({ jobId: job._id }).then(app => {
+          Application.findOne({
+            jobId: job._id
+          }).then(app => {
             response[i] = job.toJSON();
             response[i].appId = app._id;
             response[i].callback = app.callback;
@@ -186,12 +189,6 @@ const getJobs = (query, callback) => {
         )
       ).then(() => callback(null, response));
     })
-=======
-    .sort({
-      postDate: 'desc'
-    })
-    .then(jobs => callback(null, jobs))
->>>>>>> temporary merged
     .catch(err => callback(err, null));
 };
 
@@ -214,15 +211,10 @@ const removeJob = (remove, callback) => {
 };
 
 const applicationSchema = mongoose.Schema({
-<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
-  jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Job' },
-=======
-  userId: {
+  jobId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'Job'
   },
-  appName: String,
->>>>>>> temporary merged
   customizedFull: Boolean,
   customizedPersonal: Boolean,
   customizedSotwareEngineeringProjects: Boolean,
@@ -246,45 +238,29 @@ const applicationSchema = mongoose.Schema({
 
 const Application = mongoose.model('Application', applicationSchema);
 
-<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
 function addApplication(appData) {
   return Application.create(appData);
 }
 
-const getMyApps = ({ userId }) =>
-  Job.find({ userId: userId }).then(jobs => Promise.all(jobs.map(job => Application.findOne({ jobId: job._id }))));
-
-const got = ({ appId, jobId, type }) =>
-  Application.findByIdAndUpdate(appId, { [type]: true }).then(() => Job.findByIdAndUpdate(jobId, { state: type }));
-=======
-const addApplication = appData =>
-  User.find({
-    userName: appData.userName
-  }).then(user =>
-    Application.create(delete appData.userName && (appData.userId = user[0]._id) && appData)
-  );
-
 const getMyApps = ({
-    userName
+    userId
   }) =>
-  User.find({
-    userName: userName
-  }).then(user => Application.find({
-    userId: user[0]._id
+  Job.find({
+    userId: userId
+  }).then(jobs => Promise.all(jobs.map(job => Application.findOne({
+    jobId: job._id
+  }))));
+
+const got = ({
+    appId,
+    jobId,
+    type
+  }) =>
+  Application.findByIdAndUpdate(appId, {
+    [type]: true
+  }).then(() => Job.findByIdAndUpdate(jobId, {
+    state: type
   }));
-
-const gotCallback = ({
-  id
-}) => Application.findByIdAndUpdate(id, {
-  callback: true
-});
-
-const gotInterview = ({
-  id
-}) => Application.findByIdAndUpdate(id, {
-  interview: true
-});
->>>>>>> temporary merged
 
 const _analytics = data =>
   Object.keys(data).forEach(key => {
@@ -299,22 +275,10 @@ const _generateStats = data =>
   _analytics(
     data.reduce(
       (response, attributes) =>
-<<<<<<< 78e3bd427d1325e376f69f313308e4487f2a34c3
-        Object.keys(attributes.toJSON()).forEach(
-          (key, resKey) =>
-            !['_id', 'jobId', 'callback', 'interview', '__v'].includes(key) &&
-            (response[(resKey = key + attributes[key])] = {
-              callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
-              interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
-              total: 1 + ((response[resKey] && response[resKey].total) || 0),
-            })
-        ) || response,
-      { totalApps: data.length }
-=======
       Object.keys(attributes.toJSON()).forEach(
         (key, resKey) =>
-        !['_id', 'userId', 'appName', 'callback', 'interview', '__v'].includes(key) &&
-        (response[(resKey = key + ' ' + attributes[key])] = {
+        !['_id', 'jobId', 'callback', 'interview', '__v'].includes(key) &&
+        (response[(resKey = key + attributes[key])] = {
           callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
           interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
           total: 1 + ((response[resKey] && response[resKey].total) || 0),
@@ -322,27 +286,29 @@ const _generateStats = data =>
       ) || response, {
         totalApps: data.length
       }
->>>>>>> temporary merged
     )
   );
 
 const getMyStats = user =>
   getMyApps(user)
-    .then(data =>
-      data.reduce(
-        (response, attributes) => {
-          response.callback += attributes.callback;
-          response.interview += attributes.interview;
-          return response;
-        },
-        { callback: 0, interview: 0, total: data.length }
-      )
+  .then(data =>
+    data.reduce(
+      (response, attributes) => {
+        response.callback += attributes.callback;
+        response.interview += attributes.interview;
+        return response;
+      }, {
+        callback: 0,
+        interview: 0,
+        total: data.length
+      }
     )
-    .then(data => {
-      data.callback *= 100 / data.total;
-      data.interview *= 100 / data.total;
-      return data;
-    });
+  )
+  .then(data => {
+    data.callback *= 100 / data.total;
+    data.interview *= 100 / data.total;
+    return data;
+  });
 
 const getAllStats = () => Application.find().then(_generateStats);
 

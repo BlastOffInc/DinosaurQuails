@@ -213,11 +213,7 @@ class App extends Component {
   /** @description This function sends a post request to server with the job info andn then updates page with the new jobs from database and closes the create job modal. */
   createNewJob(job) {
     this.submitData('/jobs', job, (response, err) => {
-<<<<<<< Updated upstream
       this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, (response, err) => {
-=======
-      this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, ((response, err) => {
->>>>>>> Stashed changes
         this.setState({
           jobs: response.data,
           createView: '',
@@ -271,7 +267,6 @@ class App extends Component {
           job={this.state.selectedJob}
           saveChanges={this.updateData.bind(this)}
         />
-<<<<<<< Updated upstream
       );
     }
   }
@@ -354,33 +349,6 @@ class App extends Component {
           <div className="trackerpage">
             <JobTable2 jobData={this.state.jobs} detailOpen={this.detailOpen.bind(this)} />
           </div>
-=======
-      )
-    }
-  }
-
-  /** @description This gets the Nav bar and Select bars to render as the default view regardless of login status */
-  render() {
-    return (
-      <div>
-        <Fragment>
-          <Nav
-            displayLoginSignup={this.displayLoginSignup.bind(this)}
-            isLoggedIn={this.state.isLoggedIn}
-            displayCreateJob={this.displayCreateJob.bind(this)}
-            updateStatus={this.updateStatus.bind(this)}
-            updateUserInfo={this.updateUserInfo.bind(this)}
-          />
-          <SelectBar changeJobFilter={this.changeJobFilter.bind(this)} />
-
-          <JobList detailOpen={this.detailOpen.bind(this)} jobData={this.state.jobs} filter={this.state.filter} />
-        </Fragment>
-        <div className="signInRegister">
-          {this.showLoginOrSignUp()}
-        </div>
-        <div className="createJob">
-          {this.showCreate()}
->>>>>>> Stashed changes
         </div>
       );
     } else if (this.state.isLoggedIn && this.state.tab === 'tasks') {
