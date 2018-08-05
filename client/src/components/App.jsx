@@ -1,14 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import Nav from './Nav.jsx';
+import NavAndSelectBar from './NavAndSelectBar.jsx';
 import LandingPage from './LandingPage.jsx';
 import SelectBar from './SelectBar.jsx';
 import JobList from './JobList.jsx';
 import LoginSignUp from './LoginSignUp.jsx';
 import CreateJob from './CreateJob.jsx';
 import JobDetailWrapped from './JobDetail.jsx';
-import JobTable2 from './JobTable2.jsx';
+import JobTable from './JobTable.jsx';
 import axios from 'axios';
 import Application from './Application.jsx';
+import Dashboard from './Dashboard.jsx';
 
 class App extends Component {
   constructor(props) {
@@ -87,10 +89,9 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-  // componentDidMount() {
-  //   console.log('hi on line 91');
-  //   this.retrieveStats();
-  // }
+  componentDidMount() {
+    this.retrieveStats();
+  }
 
   /** @description This function changes the loginSignupButtonIsClicked state to retermine if the login or register modal should popup for user to input information */
   displayLoginSignup(id) {
@@ -202,6 +203,7 @@ class App extends Component {
         });
       });
     });
+    this.render();
   }
 
   //? Login and Signup Functions:
@@ -259,143 +261,66 @@ class App extends Component {
    */
 
   render() {
-    if (this.state.isLoggedIn && this.state.tab === 'all') {
-      return (
-        <div>
-          <Fragment>
-            <Nav
-              displayLoginSignup={this.displayLoginSignup.bind(this)}
-              isLoggedIn={this.state.isLoggedIn}
-              displayCreateJob={this.displayCreateJob.bind(this)}
-              updateStatus={this.updateStatus.bind(this)}
-              updateUserInfo={this.updateUserInfo.bind(this)}
-            />
-            <SelectBar changeTab={this.changeTab.bind(this)} />
-          </Fragment>
-          <div className="dashboard">
-            <div className="latestjobs">
-              <div>Latest Applications </div>
-              <JobList
-                detailOpen={this.detailOpen.bind(this)}
-                jobData={this.state.jobs.slice(0, 3)}
-                filter={this.state.filter}
-              />
-            </div>
+    let topNavigation;
+    let body;
 
-            <div className="stats">
-              <div className="statstitle">Stats</div>
-              <div className="activeapps">
-                Applications
-                <div>
-                  <h1>{this.state.appStats.total}</h1>
-                </div>
-              </div>
-              <div className="callbackrate">
-                Callback Rate
-                <div>
-                  <h1>{this.state.appStats.callback}%</h1>
-                </div>
-              </div>
-              <div className="interviewrate">
-                Interview Rate
-                <div>
-                  <h1>{this.state.appStats.interview}%</h1>
-                </div>
-              </div>
-            </div>
-            <div className="tasks">Fun list of todos</div>
-            <div className="signInRegister">{this.showLoginOrSignUp()}</div>
-            <div className="createJob">{this.showCreate()}</div>
-            <div className="jobDetail">{this.showDetail()}</div>
-          </div>
-        </div>
-      );
-    } else if (this.state.isLoggedIn && this.state.tab === 'tracker') {
-      return (
-        <div>
-          <Fragment>
-            <Nav
-              displayLoginSignup={this.displayLoginSignup.bind(this)}
-              isLoggedIn={this.state.isLoggedIn}
-              displayCreateJob={this.displayCreateJob.bind(this)}
-              updateStatus={this.updateStatus.bind(this)}
-              updateUserInfo={this.updateUserInfo.bind(this)}
-            />
-            <div>
-              <SelectBar changeTab={this.changeTab.bind(this)} />
-            </div>
-          </Fragment>
+    if (this.state.isLoggedIn) {
+      topNavigation = (
+        <React.Fragment>
+          <Nav
+            displayLoginSignup={this.displayLoginSignup.bind(this)}
+            isLoggedIn={this.state.isLoggedIn}
+            displayCreateJob={this.displayCreateJob.bind(this)}
+            updateStatus={this.updateStatus.bind(this)}
+            updateUserInfo={this.updateUserInfo.bind(this)}
+          />
+          <SelectBar changeTab={this.changeTab.bind(this)} />
           <div className="signInRegister">{this.showLoginOrSignUp()}</div>
           <div className="createJob">{this.showCreate()}</div>
           <div className="jobDetail">{this.showDetail()}</div>
-          <div className="trackerpage">
-            <JobTable2 jobData={this.state.jobs} detailOpen={this.detailOpen.bind(this)} />
-          </div>
-        </div>
-      );
-    } else if (this.state.isLoggedIn && this.state.tab === 'tasks') {
-      return (
-        <div>
-          <Fragment>
-            <Nav
-              displayLoginSignup={this.displayLoginSignup.bind(this)}
-              isLoggedIn={this.state.isLoggedIn}
-              displayCreateJob={this.displayCreateJob.bind(this)}
-              updateStatus={this.updateStatus.bind(this)}
-              updateUserInfo={this.updateUserInfo.bind(this)}
-            />
-            <div>
-              <SelectBar changeTab={this.changeTab.bind(this)} />
-            </div>
-          </Fragment>
-          <div className="signInRegister">{this.showLoginOrSignUp()}</div>
-          <div className="createJob">{this.showCreate()}</div>
-          <div className="jobDetail">{this.showDetail()}</div>
-          <div className="main-body">Google Calendar to do lists thing</div>
-        </div>
-      );
-    } else if (this.state.isLoggedIn && this.state.tab === 'analytics') {
-      return (
-        <div>
-          <Fragment>
-            <Nav
-              displayLoginSignup={this.displayLoginSignup.bind(this)}
-              isLoggedIn={this.state.isLoggedIn}
-              displayCreateJob={this.displayCreateJob.bind(this)}
-              updateStatus={this.updateStatus.bind(this)}
-              updateUserInfo={this.updateUserInfo.bind(this)}
-            />
-            <div>
-              <SelectBar changeTab={this.changeTab.bind(this)} />
-            </div>
-          </Fragment>
-          <div className="signInRegister">{this.showLoginOrSignUp()}</div>
-          <div className="createJob">{this.showCreate()}</div>
-          <div className="jobDetail">{this.showDetail()}</div>
-          <Application />
-        </div>
+        </React.Fragment>
       );
     } else {
-      return (
-        <div>
-          <Fragment>
-            <Nav
-              displayLoginSignup={this.displayLoginSignup.bind(this)}
-              isLoggedIn={this.state.isLoggedIn}
-              displayCreateJob={this.displayCreateJob.bind(this)}
-              updateStatus={this.updateStatus.bind(this)}
-              updateUserInfo={this.updateUserInfo.bind(this)}
-            />
-            <div>
-              <LandingPage />
-            </div>
-          </Fragment>
+      topNavigation = (
+        <React.Fragment>
+          <Nav
+            displayLoginSignup={this.displayLoginSignup.bind(this)}
+            isLoggedIn={this.state.isLoggedIn}
+            displayCreateJob={this.displayCreateJob.bind(this)}
+            updateStatus={this.updateStatus.bind(this)}
+            updateUserInfo={this.updateUserInfo.bind(this)}
+          />
           <div className="signInRegister">{this.showLoginOrSignUp()}</div>
-          <div className="createJob">{this.showCreate()}</div>
-          <div className="jobDetail">{this.showDetail()}</div>
-        </div>
+        </React.Fragment>
       );
     }
+
+    if (this.state.isLoggedIn) {
+      if (this.state.tab === 'all') {
+        body = (
+          <Dashboard
+            detailOpen={this.detailOpen.bind(this)}
+            jobData={this.state.jobs.slice(0, 3)}
+            appStats={this.state.appStats}
+          />
+        );
+      } else if (this.state.tab === 'tracker') {
+        body = <JobTable className="trackerpage" jobData={this.state.jobs} detailOpen={this.detailOpen.bind(this)} />;
+      } else if (this.state.tab === 'tasks') {
+        body = <div className="main-body">Google Calendar to do lists thing</div>;
+      } else if (this.state.tab === 'analytics') {
+        body = <Application />;
+      }
+    } else {
+      body = <LandingPage />;
+    }
+
+    return (
+      <React.Fragment>
+        {topNavigation}
+        {body}
+      </React.Fragment>
+    );
   }
 }
 
