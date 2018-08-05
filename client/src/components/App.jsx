@@ -128,16 +128,10 @@ class App extends Component {
   }
 
   /** @description Conditional rendering for the login/register modal.
-<<<<<<< Updated upstream
    */
 
   showLoginOrSignUp() {
     const view = this.state.loginSignupButtonIsClicked;
-=======
- */
-  showLoginOrSignUp() {
-    const view = this.state.loginSignupButtonIsClicked
->>>>>>> Stashed changes
 
     if (view) {
       return (
@@ -149,22 +143,14 @@ class App extends Component {
           updateUserInfo={this.updateUserInfo.bind(this)}
           getJobData={this.getJobData.bind(this)}
         />
-<<<<<<< Updated upstream
       );
-=======
-      )
->>>>>>> Stashed changes
     }
   }
 
   /** @description this function gets called when user logs in, adds job, updates/deletes job */
   getJobData() {
     if (this.state.isLoggedIn) {
-<<<<<<< Updated upstream
       this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, (response, err) => {
-=======
-      this.retrieveData('/jobs', { params: { userId: this.state.user.id } }, ((response, err) => {
->>>>>>> Stashed changes
         this.setState({
           jobs: response.data,
         });

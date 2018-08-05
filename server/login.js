@@ -1,18 +1,25 @@
-const login = require('express').Router();
-const util = require('./helpers/utilities.js');
+const router = require('express').Router();
 const passport = require('./config/passport');
 
-login.get('/', passport.authenticate('google', {
+router.get('/', passport.authenticate('google', {
   scope: ['https://www.googleapis.com/auth/plus.login']
 }));
 
-login.get('/callback', passport.authenticate('google'), (req, res) => {
-  console.log('callback');
-  res.redirect('/loggedin');
+router.get('/callback', passport.authenticate('google', {
+  failureRedirect: '/'
+}), (req, res) => {
+  res.redirect('/');
+});
+
+router.get('/user', (req, res) => {
   res.send(req.user);
 });
 
-module.exports = login;
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+})
+module.exports = router;
 
 
 
