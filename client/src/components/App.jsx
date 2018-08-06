@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import Nav from './Nav.jsx';
-import NavAndSelectBar from './NavAndSelectBar.jsx';
 import LandingPage from './LandingPage.jsx';
 import SelectBar from './SelectBar.jsx';
 import JobList from './JobList.jsx';

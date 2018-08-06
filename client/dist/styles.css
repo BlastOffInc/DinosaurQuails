@@ -87,6 +87,7 @@ h6 {
 .tasks {
   grid-area: tasks;
   text-align: center;
+  font-size: 22px;
   margin: 10px;
   padding: 5px;
   border: 2px solid #7dce94;
@@ -96,6 +97,7 @@ h6 {
 .latestjobs {
   grid-area: latestjobs;
   text-align: center;
+  font-size: 22px;
   margin: 10px;
   padding: 5px;
   border: 2px solid #7dce94;
