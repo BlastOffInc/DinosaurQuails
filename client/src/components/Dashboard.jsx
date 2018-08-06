@@ -23,7 +23,7 @@ var Dashboard = props => {
           <h1>{Math.round(props.appStats.interview)}%</h1>
         </div>
       </div>
-      <div className="tasks">Fun list of todos</div>
+      <div className="tasks">Tasks</div>
     </div>
   );
 };
