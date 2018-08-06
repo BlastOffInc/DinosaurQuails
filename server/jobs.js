@@ -101,7 +101,10 @@ const sampleData = (req, res) => {
             },
           },
         },
-        { sendStatus: () => {}, send: () => {} }
+        {
+          sendStatus: () => {},
+          send: () => {},
+        }
       )
     )
   )
@@ -109,10 +112,10 @@ const sampleData = (req, res) => {
     .catch(err => res.status(400).send(err));
 };
 
-router.get('/jobs/sampleData', sampleData);
+router.get('/sampleData', sampleData);
 
-router.post('/jobs', jobPoster);
+router.post('/', jobPoster);
 
-router.get('/jobs', jobHelperQuery);
+router.get('/', jobHelperQuery);
 
 module.exports = router;

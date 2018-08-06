@@ -1,29 +1,37 @@
-const db = require('../db/index.js');
-const app = require('./index.js');
-const login = require('express').Router();
-const util = require('./helpers/utilities.js');
+const router = require('express').Router();
+const passport = require('./configs/passport');
 
-login.post('/login', function(req, res) {
-  //send auth query to DB
-  //if affirmed redirect to '/jobs'
-  let query = {
-    email: req.body.email,
-    password: req.body.password
-  };
+router.get(
+  '/',
+  passport.authenticate('google', {
+    scope: [
+      'profile',
+      'email',
+      'https://www.googleapis.com/auth/calendar',
+      'https://www.googleapis.com/auth/calendar.readonly',
+    ],
+  })
+);
 
-  // Eventually, we should have server side form validation before talking to DB,
-  // because DB transaction is sort of expensive
-  db.login(query, (err, data) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      if (data.messageCode === 104 || data.messageCode === 103) {
-        res.json(data);
-      } else {
-        util.createSession(req, res, data); //<- send something to indicate/initiate 'session' state change
-      }
-    }
+router.get(
+  '/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
+  }),
+  (req, res) => {
+    res.redirect('/');
+  }
+);
+
+router.get('/user', (req, res) => {
+  res.send({
+    user: req.user,
   });
 });
 
-module.exports = login;
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
+module.exports = router;

@@ -26,15 +26,14 @@ const Nav = props => (
         <Typography variant="headline" color="inherit" id="banner" style={styles.flex}>
           <div><Banner /></div>
         </Typography>
-          {props.isLoggedIn ? (
+        {props.isLoggedIn ? (
+          <div>
+            <Button color="inherit" id="Create" onClick={() => props.displayCreateJob('create')}>Add</Button>
+            <Button color="inherit" id="logout" href="/auth/google/logout">Logout</Button>
+          </div>
+        ) : (
             <div>
-              <Button color="inherit" id="Create" onClick={() => props.displayCreateJob('create')}>Add</Button>
-              <Button color="inherit" id="logout" onClick={() => {props.updateStatus(false); props.updateUserInfo(null, null, null, null, null)}}>Logout</Button>
-            </div>
-          ) : (
-            <div>
-              <Button color="inherit" id="login" onClick={() => props.displayLoginSignup('login')}>Login</Button>
-              <Button color="inherit" id="register" onClick={() => props.displayLoginSignup('register')}>Register</Button>
+              <Button color="inherit" id="login" href="/auth/google">Login</Button>
             </div>
           )}
       </Toolbar>

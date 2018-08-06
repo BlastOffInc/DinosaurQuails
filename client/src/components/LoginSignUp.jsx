@@ -171,19 +171,21 @@ class LoginSignUp extends React.Component {
                     required
                   />
                 </React.Fragment>
+
+
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={() => this.logIntoAccount()} color="primary">
-                Log in
+              <Button color="primary">
+                <a href='/auth/google'>Log in</a>
               </Button>
               <Button onClick={() => this.props.displayLoginSignup(false)} color="primary" autoFocus>
                 Exit
-              </Button>
+            </Button>
             </DialogActions>
           </Dialog>
         </React.Fragment>
-      );
+      )
     }
 
     if (this.props.view === 'register') {
@@ -275,7 +277,7 @@ class LoginSignUp extends React.Component {
               </Button>
             </DialogActions>
           </Dialog>
-        </React.Fragment>
+        </React.Fragment >
       );
     }
   }
