@@ -9,7 +9,6 @@ const login = require('./login');
 const PATH = require('path');
 const application = require('./application');
 const jobimport = require('./jobimport.js');
-const SECRET = require('../config/config').SECRET;
 const passport = require('passport');
 /****** SETUP MIDDLEWARE *****/
 app.use(
@@ -22,7 +21,7 @@ app.use(bodyParser.json());
 
 app.use(
   session({
-    secret: process.env.SECRET || SECRET,
+    secret: process.env.SECRET || require('../config/config').SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
