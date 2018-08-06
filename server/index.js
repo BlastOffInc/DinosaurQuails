@@ -12,9 +12,11 @@ const jobimport = require('./jobimport.js');
 const SECRET = require('../config/config').SECRET;
 const passport = require('passport');
 /****** SETUP MIDDLEWARE *****/
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
 
 app.use(bodyParser.json());
 
@@ -25,7 +27,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 86400000, // one day in ms
-    }
+    },
   })
 );
 
@@ -45,8 +47,6 @@ app.get('/', util.checkUser, (req, res) => {
  * Every time we attempted to utilize it, the server wouldn't reach the endpoint.
  */
 
-app.get('/jobs/sampleData', jobs);
-
 app.use('/jobs', util.checkUser, jobs);
 
 app.use('/job', util.checkUser, job);
@@ -57,23 +57,9 @@ app.use('/application', util.checkUser, application);
 const PORT = process.env.PORT || 3000;
 
 //Establish port#
-app.listen(PORT, function () {
+app.listen(PORT, function() {
   console.log('Get the Job Cat at port: ', PORT);
 });
 
 //save update
 module.exports = app;
-
-app.get('/joburl', function (req, res) {
-  var link = req.body.link;
-  console.log('line 71 post server', link);
-  util.getJobInfo(link, function (err, data) {
-    if (err) {
-      res.sendStatus(500);
-      console.log('why is the request not going through');
-    } else {
-      console.log('hi');
-      res.send(data);
-    }
-  });
-});

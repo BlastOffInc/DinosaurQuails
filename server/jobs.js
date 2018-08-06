@@ -66,8 +66,9 @@ const sampleData = (req, res) => {
     arr.push(i);
   }
   Promise.all(
-      arr.map(() =>
-        jobPoster({
+    arr.map(() =>
+      jobPoster(
+        {
           body: {
             userId: '66666666',
             name: 'none',
@@ -99,20 +100,22 @@ const sampleData = (req, res) => {
               interview: Math.random() < 0.03,
             },
           },
-        }, {
+        },
+        {
           sendStatus: () => {},
-          send: () => {}
-        })
+          send: () => {},
+        }
       )
     )
+  )
     .then(() => res.sendStatus(201))
     .catch(err => res.status(400).send(err));
 };
 
-router.get('/jobs/sampleData', sampleData);
+router.get('/sampleData', sampleData);
 
-router.post('/jobs', jobPoster);
+router.post('/', jobPoster);
 
-router.get(jobHelperQuery);
+router.get('/', jobHelperQuery);
 
 module.exports = router;

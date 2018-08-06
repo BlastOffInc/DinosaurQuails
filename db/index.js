@@ -11,11 +11,11 @@ mongoose.connect(DB);
 
 const db = mongoose.connection;
 
-db.on('error', function () {
+db.on('error', function() {
   console.log('Error connecting to Mongoose');
 });
 
-db.once('open', function () {
+db.once('open', function() {
   console.log('Mongoose connected');
 });
 
@@ -25,82 +25,88 @@ let userSchema = mongoose.Schema({
   lastName: String,
   userName: {
     type: String,
-    unique: true
+    unique: true,
   },
   email: {
     type: String,
-    unique: true
+    unique: true,
   },
-  googleId: String
+  googleId: String,
 });
 
 //ADD USER MODEL for user db
 let User = mongoose.model('User', userSchema);
 
 let createUser = (user, callback) => {
-  User.findOne({
-    email: user.email
-  }, (err, existingUser) => {
-    if (err) {
-      callback(err, null);
-    }
-    if (existingUser) {
-      console.log('existing', existingUser);
-      if (existingUser.email === user.email) {
-        callback(null, {
-          messageCode: 101,
-          message: 'User email already exists'
-        });
-      } else if (existingUser.userName === user.userName) {
-        callback(null, {
-          messageCode: 102,
-          message: 'User name already exists'
+  User.findOne(
+    {
+      email: user.email,
+    },
+    (err, existingUser) => {
+      if (err) {
+        callback(err, null);
+      }
+      if (existingUser) {
+        console.log('existing', existingUser);
+        if (existingUser.email === user.email) {
+          callback(null, {
+            messageCode: 101,
+            message: 'User email already exists',
+          });
+        } else if (existingUser.userName === user.userName) {
+          callback(null, {
+            messageCode: 102,
+            message: 'User name already exists',
+          });
+        }
+      } else {
+        hash.hashPass(user, (err, userResult) => {
+          let newUser = new User(userResult);
+          newUser
+            .save()
+            .then(data => {
+              callback(null, data);
+            })
+            .catch(error => {
+              callback(error, null);
+            });
         });
       }
-    } else {
-      hash.hashPass(user, (err, userResult) => {
-        let newUser = new User(userResult);
-        newUser
-          .save()
-          .then(data => {
-            callback(null, data);
-          })
-          .catch(error => {
-            callback(error, null);
-          });
-      });
     }
-  });
+  );
 };
 
 // Logic to take care of user login, first check if the login user is an existing user or not
 // secondly, check if the user password is valid.
 let login = (query, callback) => {
-  User.findOne({
-    email: query.email
-  }, (err, user) => {
-    if (err) {
-      callback(err, null);
-    }
+  User.findOne(
+    {
+      email: query.email,
+    },
+    (err, user) => {
+      if (err) {
+        callback(err, null);
+      }
 
-    if (!user) {
-      callback(null, {
-        messageCode: 103,
-        message: 'User does not exist'
-      });
-    } else {
-      bcrypt.compare(query.password, user.password, function (err, res) {
-        if (res === true) {
-          callback(null, user);
-        } else {
-          callback(null, {
-            messageCode: 104,
-            message: 'Wrong password'
-          });
-        }
-      });
+      if (!user) {
+        callback(null, {
+          messageCode: 103,
+          message: 'User does not exist',
+        });
+      } else {
+        bcrypt.compare(query.password, user.password, function(err, res) {
+          if (res === true) {
+            callback(null, user);
+          } else {
+            callback(null, {
+              messageCode: 104,
+              message: 'Wrong password',
+            });
+          }
+        });
+      }
     }
-  });
+  );
 };
 
 // ADD JOB SCHEMA
@@ -152,16 +158,18 @@ let createJob = (fieldInfo, callback) => {
     state: fieldInfo.state,
   });
 
-  jobOpportunity.save(function (error, savedJob) {
+  jobOpportunity.save(function(error, savedJob) {
     if (error) {
       console.log('could not save job to db', error);
       callback(error, null);
     } else {
       console.log('saved job to db', savedJob);
+      console.log(fieldInfo.state);
       fieldInfo.analytics.jobId = savedJob._id;
       fieldInfo.analytics.callback =
         fieldInfo.state === 'callback' || fieldInfo.state === 'interview' || fieldInfo.state === 'offered';
       fieldInfo.analytics.interview = fieldInfo.state === 'interview' || fieldInfo.state === 'offered';
+      console.log(fieldInfo.analytics);
       addApplication(fieldInfo.analytics).then(() => callback(null, savedJob));
     }
   });
@@ -172,14 +180,14 @@ const getJobs = (query, callback) => {
   console.log(query);
   Job.find(query)
     .sort({
-      postDate: 'desc'
+      postDate: 'desc',
     })
     .then(jobs => {
       let response = [];
       Promise.all(
         jobs.map((job, i) =>
           Application.findOne({
-            jobId: job._id
+            jobId: job._id,
           }).then(app => {
             response[i] = job.toJSON();
             response[i].appId = app._id;
@@ -213,7 +221,7 @@ const removeJob = (remove, callback) => {
 const applicationSchema = mongoose.Schema({
   jobId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Job'
+    ref: 'Job',
   },
   customizedFull: Boolean,
   customizedPersonal: Boolean,
@@ -228,11 +236,11 @@ const applicationSchema = mongoose.Schema({
   inCompanyConnection: Boolean,
   callback: {
     type: Boolean,
-    default: false
+    default: false,
   },
   interview: {
     type: Boolean,
-    default: false
+    default: false,
   },
 });
 
@@ -242,25 +250,27 @@ function addApplication(appData) {
   return Application.create(appData);
 }
 
-const getMyApps = ({
-    userId
-  }) =>
+const getMyApps = ({ userId }) =>
   Job.find({
-    userId: userId
-  }).then(jobs => Promise.all(jobs.map(job => Application.findOne({
-    jobId: job._id
-  }))));
+    userId: userId,
+  }).then(jobs =>
+    Promise.all(
+      jobs.map(job =>
+        Application.findOne({
+          jobId: job._id,
+        })
+      )
+    )
+  );
 
-const got = ({
-    appId,
-    jobId,
-    type
-  }) =>
+const got = ({ appId, jobId, type }) =>
   Application.findByIdAndUpdate(appId, {
-    [type]: true
-  }).then(() => Job.findByIdAndUpdate(jobId, {
-    state: type
-  }));
+    [type]: true,
+  }).then(() =>
+    Job.findByIdAndUpdate(jobId, {
+      state: type,
+    })
+  );
 
 const _analytics = data =>
   Object.keys(data).forEach(key => {
@@ -275,40 +285,42 @@ const _generateStats = data =>
   _analytics(
     data.reduce(
       (response, attributes) =>
-      Object.keys(attributes.toJSON()).forEach(
-        (key, resKey) =>
-        !['_id', 'jobId', 'callback', 'interview', '__v'].includes(key) &&
-        (response[(resKey = key + attributes[key])] = {
-          callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
-          interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
-          total: 1 + ((response[resKey] && response[resKey].total) || 0),
-        })
-      ) || response, {
-        totalApps: data.length
+        Object.keys(attributes.toJSON()).forEach(
+          (key, resKey) =>
+            !['_id', 'jobId', 'callback', 'interview', '__v'].includes(key) &&
+            (response[(resKey = key + attributes[key])] = {
+              callback: +attributes.callback + ((response[resKey] && response[resKey].callback) || 0),
+              interview: +attributes.interview + ((response[resKey] && response[resKey].interview) || 0),
+              total: 1 + ((response[resKey] && response[resKey].total) || 0),
+            })
+        ) || response,
+      {
+        totalApps: data.length,
       }
     )
   );
 
 const getMyStats = user =>
   getMyApps(user)
-  .then(data =>
-    data.reduce(
-      (response, attributes) => {
-        response.callback += attributes.callback;
-        response.interview += attributes.interview;
-        return response;
-      }, {
-        callback: 0,
-        interview: 0,
-        total: data.length
-      }
+    .then(data =>
+      data.reduce(
+        (response, attributes) => {
+          response.callback += attributes.callback;
+          response.interview += attributes.interview;
+          return response;
+        },
+        {
+          callback: 0,
+          interview: 0,
+          total: data.length,
+        }
+      )
     )
-  )
-  .then(data => {
-    data.callback *= 100 / data.total;
-    data.interview *= 100 / data.total;
-    return data;
-  });
+    .then(data => {
+      data.callback *= 100 / data.total;
+      data.interview *= 100 / data.total;
+      return data;
+    });
 
 const getAllStats = () => Application.find().then(_generateStats);
 
