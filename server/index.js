@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.use(
   session({
-    secret: SECRET,
+    secret: process.env.SECRET || SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
