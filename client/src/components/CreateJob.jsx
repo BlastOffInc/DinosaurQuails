@@ -316,6 +316,11 @@ class CreateJob extends React.Component {
                   name="customizedFull"
                   checked={this.state.analytics.customizedFull}
                   onChange={this.handleCheck}
+                  disabled={
+                    this.state.analytics.customizedCoverLetter ||
+                    this.state.analytics.customizedPersonal ||
+                    this.state.analytics.customizedSotwareEngineeringProjects
+                  }
                 />
               </div>
               <div>
@@ -324,6 +329,7 @@ class CreateJob extends React.Component {
                   name="customizedCoverLetter"
                   checked={this.state.analytics.customizedCoverLetter}
                   onChange={this.handleCheck}
+                  disabled={this.state.analytics.customizedFull}
                 />
               </div>
               <div>
@@ -332,6 +338,7 @@ class CreateJob extends React.Component {
                   name="customizedSotwareEngineeringProjects"
                   checked={this.state.analytics.customizedSotwareEngineeringProjects}
                   onChange={this.handleCheck}
+                  disabled={this.state.analytics.customizedFull}
                 />
               </div>
               <div>
@@ -340,6 +347,7 @@ class CreateJob extends React.Component {
                   name="customizedPersonal"
                   checked={this.state.analytics.customizedPersonal}
                   onChange={this.handleCheck}
+                  disabled={this.state.analytics.customizedFull}
                 />
               </div>
               <div>
