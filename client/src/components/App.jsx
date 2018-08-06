@@ -40,6 +40,25 @@ class App extends Component {
     this.showDetail = this.showDetail.bind(this);
   }
 
+  componentDidMount() {
+    axios.get('/auth/google/user').then(res => {
+      if (res.data.user) {
+        this.setState(
+          {
+            isLoggedIn: true
+          }
+        )
+      } else {
+        this.setState(
+          {
+            isLoggedIn: false
+          }
+        )
+      }
+    });
+    this.retrieveStats();
+  }
+
   /** @description Very reusable methods for server requests - parameters are simply endpoint instead of entire URL, request object and callback function*/
   retrieveData(endpoint, params, callback) {
     axios
@@ -91,10 +110,6 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-  // componentDidMount() {
-  //   console.log('hi on line 91');
-  //   this.retrieveStats();
-  // }
 
   /** @description This function changes the loginSignupButtonIsClicked state to retermine if the login or register modal should popup for user to input information */
   displayLoginSignup(id) {

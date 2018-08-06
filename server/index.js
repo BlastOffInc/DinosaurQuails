@@ -17,10 +17,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-  console.log(req.method, req.url, req.body);
-  next();
-});
+
 app.use(
   session({
     secret: SECRET,

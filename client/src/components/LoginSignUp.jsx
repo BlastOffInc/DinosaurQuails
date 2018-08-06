@@ -177,7 +177,7 @@ class LoginSignUp extends React.Component {
             </DialogContent>
             <DialogActions>
               <Button color="primary">
-                <a href='/login'>Log in</a>
+                <a href='/auth/google'>Log in</a>
               </Button>
               <Button onClick={() => this.props.displayLoginSignup(false)} color="primary" autoFocus>
                 Exit
