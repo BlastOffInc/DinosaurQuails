@@ -33,7 +33,6 @@ class CreateJob extends React.Component {
       payRange: '',
       state: '',
       open: true,
-      jobImportURL: '',
       missingFields: false,
       analytics: {
         customizedFull: false,
@@ -96,43 +95,23 @@ class CreateJob extends React.Component {
   createNewJob() {
     this.state.missingFields = false;
     if (
-      (this.state.name === '' ||
-        this.state.title === '' ||
-        this.state.website === '' ||
-        this.state.email === '' ||
-        this.state.phone === '' ||
-        this.state.recruiter === '' ||
-        this.state.postDate === '' ||
-        this.state.appliedDate === '' ||
-        this.state.interviewedDate === '' ||
-        this.state.coverLetterUrl === '' ||
-        this.state.payRange === '' ||
-        this.state.state === '') &&
-      this.state.jobImportURL === ''
+      this.state.name === '' ||
+      this.state.title === '' ||
+      this.state.website === '' ||
+      this.state.email === '' ||
+      this.state.phone === '' ||
+      this.state.recruiter === '' ||
+      this.state.postDate === '' ||
+      this.state.appliedDate === '' ||
+      this.state.interviewedDate === '' ||
+      this.state.coverLetterUrl === '' ||
+      this.state.payRange === '' ||
+      this.state.state === ''
     ) {
       this.setState({ missingFields: true });
     } else {
       this.props.onSubmit(this.state);
     }
-  }
-
-  getJobInfoFromURL() {
-    axios
-      .get('/joburl', {
-        params: {
-          url: this.state.jobImportURL,
-        },
-      })
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => console.log(err));
-    // axios
-    //   .get(endpoint, params, callback)
-    //   .then(response => {
-    //     console.log(response);
-    //   })
-    //   .catch(err => console.log(err));
   }
 
   // JSX renders html elements
@@ -150,34 +129,33 @@ class CreateJob extends React.Component {
 
           <DialogContent>
             <div style={this.state.missingFields ? { color: 'red' } : { display: 'none', fontSize: '1.5em' }}>
-              <a>{'You must fill in either the Job Listing'}</a>
+              <a>{'You must fill in all fields'}</a>
               <br />
-              <a> {'URL or all the fields in the form'}</a>
+              <a> {'in the form'}</a>
               <br />
             </div>
-            <DialogContentText id="alert-dialog-description">
-              <div>
-                <label>Job Listing URL</label>
-                <input
-                  type="text"
-                  name="jobImportURL"
-                  value={this.state.jobImportURL}
-                  onChange={e => {
-                    this.handleChange(e);
-                  }}
-                  required
-                />
-              </div>
-            </DialogContentText>
           </DialogContent>
 
           <Button
             variant="outlined"
-            onClick={e => {
-              this.getJobInfoFromURL();
-            }}
+            onClick={e =>
+              this.setState({
+                name: 'Amazon',
+                title: 'Software Engineer',
+                website: 'www.amazon.com',
+                email: 'hr@amazon.com',
+                phone: '703-890-7280',
+                recruiter: 'Jeff Bezos',
+                postDate: '2018-07-30',
+                appliedDate: '2018-08-05',
+                interviewedDate: '2018-08-25',
+                coverLetterUrl: 'drive.google.amazoncoverletter.pdf',
+                payRange: '80000',
+                state: 'applied',
+              })
+            }
           >
-            Import from URL
+            Quick Fill
           </Button>
 
           <DialogContent>
