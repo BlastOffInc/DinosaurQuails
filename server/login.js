@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('./config/passport');
+const passport = require('./configs/passport');
 
 router.get('/', passport.authenticate('google', {
   scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.readonly']
